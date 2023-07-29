@@ -119,12 +119,25 @@ public class Scalar extends Expression {
             pow = Math.abs(((Fraction)e).num.value);
             root = Math.abs(((Fraction)e).den.value);
         }
-        ArrayList<long[]> primeFactors = clone(primeFactorization);
-        for (int i = 0; i < primeFactors.size();i++){
-            primeFactors.get(i)[1] *= pow;
-            primeFactors.get(i)[1] /= root;
+        ArrayList<long[]> coefficientFactors = new ArrayList<>();
+        ArrayList<long[]> rootFactors = new ArrayList<>();
+        for (long[] factor: primeFactorization) {
+            if (factor[1] * pow >= root){
+                coefficientFactors.add(new long[]{factor[0],(factor[1] * pow) / root});
+                if (factor[1] * pow % root != 0){
+                    rootFactors.add(new long[]{factor[0],(factor[1] * pow) % root});
+                }
+            } else {
+                rootFactors.add(factor);
+            }
         }
-        return shouldInvert? new Scalar(primeFactors).invert():new Scalar(primeFactors);
+        Expression product;
+        if (shouldInvert){
+            product = new Scalar(coefficientFactors).invert().multiply(new Exponential(new Scalar(rootFactors),new Scalar(root).invert().negate()));
+        } else {
+            product = new Scalar(coefficientFactors).multiply(new Exponential(new Scalar(rootFactors),new Scalar(root).invert()));
+        }
+        return product;
     }
 
     @Override
@@ -145,13 +158,17 @@ public class Scalar extends Expression {
             long pow = Math.abs(((Scalar)((Fraction)e).num).value);
             long root = Math.abs(((Scalar)((Fraction)e).den).value);
             for (long[] factor: primeFactorization){
-                if ((factor[1] * pow) % root != 0){
+                if ((factor[1] * pow) % root < 0){
                     return false;
                 }
             }
             return true;
         }
         return false;
+    }
+
+    public long[][] primeFactorization(){
+        return clone(primeFactorization).toArray(new long[0][0]);
     }
 
     private static ArrayList<long[]> getPrimeFactorization(long n){

@@ -15,7 +15,10 @@ public class Exponential extends Expression {
 
     @Override
     public Expression invert() {
-        return base.pow(exponent.negate());
+        if (exponent.equals(Scalar.NEG_ONE)){
+            return base;
+        }
+        return new Exponential(base,exponent.negate());
     }
 
     @Override
@@ -67,6 +70,8 @@ public class Exponential extends Expression {
             toLaTeX += "(" + base.toLaTeX() + ")";
         } else if (base instanceof Product && ((Product) base).terms.length > 1){
             toLaTeX += "(" + base.toLaTeX() + ")";
+        } else {
+            toLaTeX += base.toLaTeX();
         }
         return toLaTeX + "^{" + exponent.toLaTeX() + "}";
     }
@@ -129,7 +134,7 @@ public class Exponential extends Expression {
                 return false;
             }
         } else {
-            return base.equals(e);
+            return base.equals(e) && !(exponent instanceof Fraction);
         }
     }
 

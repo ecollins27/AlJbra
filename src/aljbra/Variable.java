@@ -35,7 +35,7 @@ public class Variable extends Expression {
 
     @Override
     public String toLaTeX() {
-        return name;
+        return laTeXName;
     }
 
     @Override

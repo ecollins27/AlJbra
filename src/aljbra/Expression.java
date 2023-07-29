@@ -8,26 +8,7 @@ public abstract class Expression {
     final static Comparator<Expression> termComparator = new Comparator<Expression>() {
         @Override
         public int compare(Expression o1, Expression o2) {
-            if (o1.getClass().equals(o2.getClass())){
-                return 0;
-            }
-            int value1;
-            if (o1 instanceof Fraction || o1 instanceof Scalar){
-                value1 = 0;
-            } else if (o1 instanceof Exponential){
-                value1 = 1;
-            } else {
-                value1 = 2;
-            }
-            int value2;
-            if (o2 instanceof Fraction || o2 instanceof Scalar){
-                value2 = 0;
-            } else if (o2 instanceof Exponential){
-                value2 = 1;
-            } else {
-                value2 = 2;
-            }
-            return Integer.compare(value1,value2);
+            return o1.toString().compareTo(o2.toString());
         }
     };
 

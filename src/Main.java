@@ -1,10 +1,16 @@
 import aljbra.*;
 
 public class Main {
+
+    /*
+    TODO:
+        Convert Scalar to represent BigInteger
+        add eval() - return BigDecimal
+        add replace(),contains,visualize(),save(),Fraction.valueOf()
+     */
     public static void main(String[] args) {
-        Expression test = fibonacci(Scalar.ONE);
-        Expression test1 = test.fullSimplify();
-        System.out.println(test1.toLaTeX());
+        Expression test = new Variable("x").add(new Variable("y").add(new Variable("z"))).pow(new Scalar(4));
+        System.out.println(test.fullSimplify().toLaTeX());
     }
 
     public static Expression fibonacci(Expression n){

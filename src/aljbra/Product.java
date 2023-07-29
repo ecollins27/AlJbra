@@ -57,9 +57,15 @@ public class Product extends Expression {
     public String toString() {
         String toString = "";
         for (int i = 0; i < terms.length;i++){
-            if (i > 0){
+            if (i > 0 && !terms[i].equals(Scalar.NEG_ONE)){
                 toString += " * ";
-            } if (terms[i] instanceof Sum && ((Sum) terms[i]).terms.length > 1) {
+            }
+
+            if (terms[i].equals(Scalar.NEG_ONE)){
+                toString = "-" + toString;
+            } else if (terms[i] instanceof Sum && ((Sum) terms[i]).terms.length > 1) {
+                    toString += "(" + terms[i].toString() +")";
+            } else {
                 toString += terms[i].toString();
             }
         }
@@ -70,7 +76,11 @@ public class Product extends Expression {
     public String toLaTeX() {
         String toLaTeX = "";
         for (int i = 0; i < terms.length;i++){
-            toLaTeX += terms[i].toLaTeX();
+            if (terms[i].equals(Scalar.NEG_ONE)){
+                toLaTeX = "-" + toLaTeX;
+            } else {
+                toLaTeX += terms[i].toLaTeX();
+            }
         }
         return toLaTeX;
     }
