@@ -9,6 +9,7 @@ public class Main {
         Expression cubic = cubic(new Variable("a"),new Variable("b"),new Variable("c"),new Variable("d"));
         cubic.save("Cubic Formula.png");
         Expression solution = cubic.replace(new Variable("a"),Scalar.ONE);
+
         solution = solution.replace(new Variable("b"),Scalar.ONE);
         solution = solution.replace(new Variable("c"),Scalar.ONE);
         solution = solution.replace(new Variable("d"),Scalar.ONE).fullSimplify();
