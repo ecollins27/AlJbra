@@ -1,7 +1,9 @@
 package aljbra;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class Fraction extends Expression {
 
@@ -13,6 +15,21 @@ public class Fraction extends Expression {
         if (this.den.isNegative()){
             den = (Scalar) den.negate();
             num = (Scalar) num.negate();
+        }
+    }
+
+    public static Expression valueOf(double n, boolean repeating){
+        Scalar constant = new Scalar((long)n);
+        BigDecimal num = BigDecimal.valueOf(n).remainder(BigDecimal.ONE);
+        int length = 0;
+        while (num.remainder(BigDecimal.ONE).compareTo(BigDecimal.ZERO) != 0){
+            num = num.scaleByPowerOfTen(1);
+            length++;
+        }
+        if (repeating){
+            return constant.add(new Scalar(num.longValue()).divide(new Scalar((long)(Math.pow(10,length) - 1))));
+        } else {
+            return constant.add(new Scalar(num.longValue()).divide(new Scalar((long)Math.pow(10,length))));
         }
     }
     @Override
@@ -31,6 +48,27 @@ public class Fraction extends Expression {
     }
 
     @Override
+    public double eval(HashMap<String, Double> values) {
+        return num.eval(values) / den.eval(values);
+    }
+
+    @Override
+    public boolean contains(Expression e) {
+        if (this.equals(e)){
+            return true;
+        }
+        return num.contains(e) || den.contains(e);
+    }
+
+    @Override
+    public Expression replace(Expression e, Expression with) {
+        if (this.equals(e)){
+            return with;
+        }
+        return num.replace(e,with).divide(den.replace(e,with));
+    }
+
+    @Override
     public String toString() {
         return num.toString() + " / " + den.toString();
     }
@@ -44,22 +82,7 @@ public class Fraction extends Expression {
     public Expression simplify() {
         ArrayList<long[]> numFactors = clone(num.primeFactorization);
         ArrayList<long[]> denFactors = clone(den.primeFactorization);
-        for (int i = denFactors.size() - 1; i >= 0; i--){
-            long[] factor = denFactors.get(i);
-            int index = indexOf(factor[0],numFactors);
-            if (index >= 0){
-                if (numFactors.get(index)[1] == factor[1]){
-                    numFactors.remove(index);
-                    denFactors.remove(i);
-                } else if (numFactors.get(index)[1] > factor[1]){
-                    denFactors.remove(i);
-                    numFactors.get(index)[1] -= factor[1];
-                } else {
-                    denFactors.get(i)[1] -= numFactors.get(index)[1];
-                    numFactors.remove(index);
-                }
-            }
-        }
+        simplify(numFactors,denFactors);
         return new Scalar(numFactors).divide(new Scalar(denFactors));
     }
 
@@ -73,16 +96,30 @@ public class Fraction extends Expression {
             num2 = ((Fraction)e).num;
             den2 = ((Fraction)e).den;
         }
-        return num.multiply(den2).add(num2.multiply(den)).divide(den.multiply(den2));
+        Scalar lcm = lcm(den,den2);
+        Scalar factor1 = getFactor(lcm,den);
+        Scalar factor2 = getFactor(lcm,den2);
+        return num.multiply(factor1).add(num2.multiply(factor2)).divide(lcm);
     }
 
     @Override
     Expression __multiply__(Expression e) {
+        Scalar num2,den2;
         if (e instanceof Scalar){
-            return new Fraction((Scalar) num.multiply(e),den);
+            num2 = (Scalar) e;
+            den2 = Scalar.ONE;
+        } else {
+            num2 = ((Fraction) e).num;
+            den2 = ((Fraction) e).den;
         }
-        Scalar num2 = ((Fraction)e).num, den2 = ((Fraction)e).den;
-        return new Fraction((Scalar) num.multiply(num2), (Scalar) den.multiply(den2));
+        ArrayList<long[]> multipliedNum = Scalar.merge(num.primeFactorization,num2.primeFactorization);
+        ArrayList<long[]> multipliedDen = Scalar.merge(den.primeFactorization,den2.primeFactorization);
+        simplify(multipliedNum,multipliedDen);
+        if (multipliedDen.size() > 0) {
+            return new Fraction(new Scalar(multipliedNum), new Scalar(multipliedDen));
+        } else {
+            return new Scalar(multipliedNum);
+        }
     }
 
     @Override
@@ -105,7 +142,7 @@ public class Fraction extends Expression {
         return num.isPowCompatible(e) && den.isPowCompatible(e);
     }
 
-    private int indexOf(long n, ArrayList<long[]> arrayList){
+    private static int indexOf(long n, ArrayList<long[]> arrayList){
         for (int i = 0; i < arrayList.size();i++){
             if (arrayList.get(i)[0] == n){
                 return i;
@@ -114,7 +151,54 @@ public class Fraction extends Expression {
         return -1;
     }
 
+    private Scalar lcm(Scalar a, Scalar b){
+        ArrayList<long[]> primeFactors = clone(a.primeFactorization);
+        for (int i = 0; i < b.primeFactorization.size();i++){
+            long[] factor = b.primeFactorization.get(i);
+            int index = indexOf(factor[0],primeFactors);
+            if (index == -1){
+                primeFactors.add(factor);
+            } else {
+                primeFactors.get(index)[1] = Math.max(factor[1],primeFactors.get(index)[1]);
+            }
+        }
+        return new Scalar(primeFactors);
+    }
+
     boolean isNegative(){
         return num.isNegative();
+    }
+
+    private Scalar getFactor(Scalar lcm, Scalar num){
+        ArrayList<long[]> primeFactors = clone(lcm.primeFactorization);
+        for (int i = 0; i < num.primeFactorization.size();i++){
+            long[] factor = num.primeFactorization.get(i);
+            int index = indexOf(factor[0],primeFactors);
+            if (factor[1] == primeFactors.get(index)[1]){
+                primeFactors.remove(index);
+            } else {
+                primeFactors.get(index)[1] -= factor[1];
+            }
+        }
+        return new Scalar(primeFactors);
+    }
+
+    static void simplify(ArrayList<long[]> numFactors, ArrayList<long[]> denFactors){
+        for (int i = denFactors.size() - 1; i >= 0; i--){
+            long[] factor = denFactors.get(i);
+            int index = indexOf(factor[0],numFactors);
+            if (index >= 0){
+                if (numFactors.get(index)[1] == factor[1]){
+                    numFactors.remove(index);
+                    denFactors.remove(i);
+                } else if (numFactors.get(index)[1] > factor[1]){
+                    denFactors.remove(i);
+                    numFactors.get(index)[1] -= factor[1];
+                } else {
+                    denFactors.get(i)[1] -= numFactors.get(index)[1];
+                    numFactors.remove(index);
+                }
+            }
+        }
     }
 }

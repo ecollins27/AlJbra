@@ -1,5 +1,7 @@
 package aljbra;
 
+import java.util.HashMap;
+
 public class Variable extends Expression {
 
     String name;
@@ -26,6 +28,24 @@ public class Variable extends Expression {
     @Override
     public boolean equals(Expression e) {
         return e instanceof Variable && !(e instanceof Constant) && name.equals(((Variable)e).name);
+    }
+
+    @Override
+    public double eval(HashMap<String, Double> values) {
+        return values.get(name);
+    }
+
+    @Override
+    public boolean contains(Expression e) {
+        return this.equals(e);
+    }
+
+    @Override
+    public Expression replace(Expression e, Expression with) {
+        if (this.equals(e)){
+            return with;
+        }
+        return this;
     }
 
     @Override

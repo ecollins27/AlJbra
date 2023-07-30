@@ -4,18 +4,18 @@ public class Main {
 
     /*
     TODO:
-        Convert Scalar to represent BigInteger
-        add eval() - return BigDecimal
-        add replace(),contains,visualize(),save(),Fraction.valueOf()
      */
     public static void main(String[] args) {
-        Expression test = new Variable("x").add(new Variable("y").add(new Variable("z"))).pow(new Scalar(4));
-        System.out.println(test.fullSimplify().toLaTeX());
+        Expression f1 = new Scalar(5).divide(new Scalar(8));
+        Expression f2 = new Scalar(6).divide(new Scalar(13));
+        System.out.println(f1.multiply(new Scalar(8)));
+        Expression fibonacci = fibonacci(new Scalar(10));
+        fibonacci.visualize();
     }
 
     public static Expression fibonacci(Expression n){
         Expression PHI = Scalar.ONE.add(new Scalar(5).sqrt()).divide(Scalar.TWO);
-        return PHI.pow(n).subtract(PHI.invert().negate().pow(n)).divide(new Scalar(5).sqrt());
+        return PHI.pow(n).subtract(PHI.invert().negate().pow(n)).divide(new Scalar(5).sqrt()).fullSimplify();
     }
 
     public static Expression quadratic(Expression A, Expression B, Expression C){

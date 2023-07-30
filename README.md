@@ -1,8 +1,10 @@
 # AlJbra
 
 ## Structure
-The AlJbra library is composed 7 non-abstract libraries: Scalar, Fraction, Variable, Constant, Sum, Product, and Exponential.  Each of these classes represent
-core aspects of algebra and all of them extend the abstract class Expression.
+The AlJbra library represents all algebraic expressions as instances of the abstract class ```Expression```.
+The ```Expression``` class contains 7 different implementations: ```Scalar```,```Fraction```,```Variable```,```Constant```,```Sum```,```Product```, and ```Exponential```.
+All of these classes represent key aspects of algebra and last three -  ```Sum```, ```Product```, and ```Exponential``` - are
+defined recursively in terms of instances of other classes.
 
 ## Documentation
 ```java
@@ -21,13 +23,19 @@ public abstract class Expression {
     public Expression fullSimplify(); // returns simplest form of Expression.  Calls .simplify() until Expression is in simplest form
     public Expression toString(); // returns String form of Expression
     public Expression toLaTeX(); // returns Expression as LaTeX String
+    public double eval(HashMap<String,Double> values); // returns double approximation of Expression with specified mapping of variable names to double
+    public boolean contains(Expression e); // returns if called Expression contains an instance(s) of specified Expression
+    public boolean replace(Expression e, Expression with); // returns Expression in which all instances of Expression e are replaced with instances of Expression with
+    public void visualize(String equationLabel); // uses LaTeX to visualize called Expression in a new window with specified name
+    public void visualize(); // uses LaTeX to visualize called Expression in a new window with blank name
+    public void save(String fileName); // saves LaTeX visualization of called Expression as png with specified file name
     public boolean equals(Expression e); // returns if specified Expression is identifal to called Expression
 }
 ```
 ```java
 public class Scalar extends Expression {
 
-    public final static Scalar NEG_ONE; // Scalar of value -1
+    public final static Scalar NEG_ONE; // Scalar of value //1
     public final static Scalar ZERO; // Scalar of value 0
     public final static Scalar ONE; // Scalar of value 1
     public final static Scalar TWO; // Scalar of value 2
@@ -35,6 +43,12 @@ public class Scalar extends Expression {
     public Scalar(long value); // constructs Scalar with specified long value
 
     public long[][] primeFactorization(); // returns array of long pairs containing the prime and raised power respectively
+}
+```
+```java
+public class Fraction extends Expression {
+    
+    public static Expression valueOf(double n, boolean repeating);  // returns fractional value of specified decimal. If decimal approximation is infinite, provide one repetition and set repeating to true
 }
 ```
 ```java

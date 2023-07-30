@@ -6,7 +6,7 @@ public class Scalar extends Expression {
 
     public final static Scalar NEG_ONE = new Scalar(-1);
     public final static Scalar ZERO = new Scalar(0);
-    public final static Scalar ONE = new Scalar(1);
+    public final static Scalar ONE = new Scalar(new ArrayList<>());
     public final static Scalar TWO = new Scalar(2);
 
     long value;
@@ -59,6 +59,24 @@ public class Scalar extends Expression {
     }
 
     @Override
+    public double eval(HashMap<String, Double> values) {
+        return value;
+    }
+
+    @Override
+    public boolean contains(Expression e) {
+        return this.equals(e);
+    }
+
+    @Override
+    public Expression replace(Expression e, Expression with) {
+        if (this.equals(e)){
+            return with;
+        }
+        return this;
+    }
+
+    @Override
     public String toString() {
         return String.valueOf(value);
     }
@@ -88,8 +106,13 @@ public class Scalar extends Expression {
         } else if (this.equals(ONE)){
             return e;
         }
-        ArrayList<long[]> primeFactors = clone(primeFactorization);
-        for (long[] factor: ((Scalar)e).primeFactorization){
+        ArrayList<long[]> primeFactors = merge(primeFactorization,((Scalar)e).primeFactorization);
+        return new Scalar(primeFactors);
+    }
+
+    static ArrayList<long[]> merge(ArrayList<long[]> a1, ArrayList<long[]> a2){
+        ArrayList<long[]> primeFactors = clone(a1);
+        for (long[] factor: a2){
             int index = indexOf(factor[0],primeFactors);
             if (index >= 0){
                 primeFactors.get(index)[1] += factor[1];
@@ -100,7 +123,7 @@ public class Scalar extends Expression {
                 primeFactors.add(factor);
             }
         }
-        return new Scalar(primeFactors);
+        return primeFactors;
     }
 
     @Override
@@ -193,7 +216,7 @@ public class Scalar extends Expression {
         return finalFactorization;
     }
 
-    private int indexOf(long n, ArrayList<long[]> arrayList){
+    private static int indexOf(long n, ArrayList<long[]> arrayList){
         for (int i = 0; i < arrayList.size();i++){
             if (arrayList.get(i)[0] == n){
                 return i;
@@ -206,10 +229,10 @@ public class Scalar extends Expression {
         return indexOf(-1,primeFactorization) >= 0;
     }
 
-    private static long getLowestFactor(long n){
-        for (int i = 2; i <= Math.sqrt(n);i++){
-            if (n % i == 0){
-                return (long)i;
+    private static long getLowestFactor(long n) {
+        for (int i = 2; i <= Math.sqrt(n); i++) {
+            if (n % i == 0) {
+                return (long) i;
             }
         }
         return n;

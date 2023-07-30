@@ -1,9 +1,6 @@
 package aljbra;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class Product extends Expression {
 
@@ -51,6 +48,40 @@ public class Product extends Expression {
             }
         }
         return true;
+    }
+
+    @Override
+    public double eval(HashMap<String, Double> values) {
+        double product = 1;
+        for (Expression term: terms){
+            product *= term.eval(values);
+        }
+        return product;
+    }
+
+    @Override
+    public boolean contains(Expression e) {
+        if (this.equals(e)){
+            return true;
+        }
+        for (Expression term: terms){
+            if (term.contains(e)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Expression replace(Expression e, Expression with) {
+        if (this.equals(e)){
+            return with;
+        }
+        Expression product = Scalar.ONE;
+        for (Expression term: terms){
+            product = product.multiply(term.replace(e,with));
+        }
+        return product;
     }
 
     @Override

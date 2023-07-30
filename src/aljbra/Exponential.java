@@ -1,5 +1,7 @@
 package aljbra;
 
+import java.util.HashMap;
+
 public class Exponential extends Expression {
 
     Expression base,exponent;
@@ -24,6 +26,27 @@ public class Exponential extends Expression {
     @Override
     public boolean equals(Expression e) {
         return e instanceof Exponential && base.equals(((Exponential) e).base) && exponent.equals(((Exponential) e).exponent);
+    }
+
+    @Override
+    public double eval(HashMap<String, Double> values) {
+        return Math.pow(base.eval(values),exponent.eval(values));
+    }
+
+    @Override
+    public boolean contains(Expression e) {
+        if (this.equals(e)){
+            return true;
+        }
+        return base.contains(e) || exponent.contains(e);
+    }
+
+    @Override
+    public Expression replace(Expression e, Expression with) {
+        if (this.equals(e)){
+            return with;
+        }
+        return base.replace(e,with).pow(exponent.replace(e,with));
     }
 
     @Override
@@ -69,6 +92,8 @@ public class Exponential extends Expression {
         if (base instanceof Sum && ((Sum) base).terms.length > 1){
             toLaTeX += "(" + base.toLaTeX() + ")";
         } else if (base instanceof Product && ((Product) base).terms.length > 1){
+            toLaTeX += "(" + base.toLaTeX() + ")";
+        } else if (base instanceof Scalar && ((Scalar) base).isNegative()){
             toLaTeX += "(" + base.toLaTeX() + ")";
         } else {
             toLaTeX += base.toLaTeX();

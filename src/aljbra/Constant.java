@@ -1,5 +1,7 @@
 package aljbra;
 
+import java.util.HashMap;
+
 public class Constant extends Variable {
 
     public final static Constant PI = new Constant("pi","\\pi",Math.PI);
@@ -15,6 +17,11 @@ public class Constant extends Variable {
     public Constant(String name, String laTeXName, double value){
         super(name,laTeXName);
         this.value = value;
+    }
+
+    @Override
+    public double eval(HashMap<String, Double> values) {
+        return value;
     }
 
     @Override

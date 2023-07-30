@@ -38,6 +38,40 @@ public class Sum extends Expression {
     }
 
     @Override
+    public double eval(HashMap<String, Double> values) {
+        double sum = 0;
+        for (Expression term: terms){
+            sum += term.eval(values);
+        }
+        return sum;
+    }
+
+    @Override
+    public boolean contains(Expression e) {
+        if (this.equals(e)){
+            return true;
+        }
+        for (Expression term: terms){
+            if (term.contains(e)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Expression replace(Expression e, Expression with) {
+        if (this.equals(e)){
+            return with;
+        }
+        Expression sum = Scalar.ZERO;
+        for (Expression term: terms){
+            sum = sum.add(term.replace(e,with));
+        }
+        return sum;
+    }
+
+    @Override
     public String toString() {
         String toString = "";
         for (int i = 0; i < terms.length;i++){
