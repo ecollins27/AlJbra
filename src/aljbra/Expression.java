@@ -12,14 +12,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 
-public abstract class Expression {
-
-    final static Comparator<Expression> termComparator = new Comparator<Expression>() {
-        @Override
-        public int compare(Expression o1, Expression o2) {
-            return o1.toString().compareTo(o2.toString());
-        }
-    };
+public abstract class Expression implements Comparable<Expression>{
     private static int numOpened = 0;
     private final static int defaultWidth = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width / 4;
     private final static int defaultHeight = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height / 5;
@@ -55,12 +48,10 @@ public abstract class Expression {
         return this.multiply(e.invert());
     }
     public final Expression pow(Expression e){
-        if (e.equals(Scalar.ONE)){
+        if (e.equals(Scalar.ONE) || this.equals(Scalar.ZERO) || this.equals(Scalar.ONE)){
             return this;
         } else if (e.equals(Scalar.ZERO)){
             return Scalar.ONE;
-        } else if (e.equals(Scalar.NEG_ONE)){
-            return new Exponential(this,e);
         } else if (this.isPowCompatible(e)){
             return this.__pow__(e);
         } else {
@@ -138,5 +129,32 @@ public abstract class Expression {
             clone.add(arrayList.get(i).clone());
         }
         return clone;
+    }
+
+    @Override
+    public int compareTo(Expression o) {
+        int index1 = this.getSimplificationIndex();
+        int index2 = o.getSimplificationIndex();
+        if (index1 == index2){
+            return this.toString().compareTo(o.toString());
+        } else {
+            return Integer.compare(index1,index2);
+        }
+    }
+
+    private final int getSimplificationIndex(){
+        if (this instanceof Exponential && ((Exponential) this).exponent instanceof Fraction){
+            return 4;
+        }
+        try {
+            eval(null);
+        } catch (NullPointerException n){
+            return 2;
+        }
+        if (this instanceof Fraction || this instanceof Scalar){
+            return 0;
+        } else {
+            return 1;
+        }
     }
 }

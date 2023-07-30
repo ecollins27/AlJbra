@@ -8,7 +8,7 @@ public class Product extends Expression {
 
     Product(Expression... terms){
         this.terms = terms;
-        Arrays.sort(this.terms,termComparator);
+        Arrays.sort(this.terms,null);
     }
     @Override
     public Expression negate() {
@@ -86,6 +86,41 @@ public class Product extends Expression {
 
     @Override
     public String toString() {
+        Expression num = Scalar.ONE,den = Scalar.ONE;
+        for (Expression term: terms){
+            if (term instanceof Fraction){
+                num = num.multiply(((Fraction) term).num);
+                den = den.multiply(((Fraction) term).den);
+            } else if (term instanceof Exponential && (((Exponential) term).exponent instanceof Scalar)) {
+                if (((Scalar) ((Exponential) term).exponent).isNegative()) {
+                    den = den.multiply(term.invert());
+                } else {
+                    num = num.multiply(term);
+                }
+            } else if (term instanceof Exponential && (((Exponential) term).exponent instanceof Fraction)){
+                if (((Fraction) ((Exponential) term).exponent).isNegative()){
+                    den = den.multiply(term.invert());
+                } else {
+                    num = num.multiply(term);
+                }
+            } else if (term instanceof Exponential && ((Exponential) term).exponent instanceof Product){
+                if (((Product) ((Exponential) term).exponent).getCoefficient().eval(null) < 0){
+                    den = den.multiply(term.invert());
+                } else {
+                    num = num.multiply(term);
+                }
+            } else {
+                num = num.multiply(term);
+            }
+        }
+        if (den.equals(Scalar.ONE)){
+            return basicToString();
+        } else {
+            return num.toString() + " / " + den.toString();
+        }
+    }
+
+    private String basicToString(){
         String toString = "";
         for (int i = 0; i < terms.length;i++){
             if (i > 0 && !terms[i].equals(Scalar.NEG_ONE)){
@@ -95,7 +130,7 @@ public class Product extends Expression {
             if (terms[i].equals(Scalar.NEG_ONE)){
                 toString = "-" + toString;
             } else if (terms[i] instanceof Sum && ((Sum) terms[i]).terms.length > 1) {
-                    toString += "(" + terms[i].toString() +")";
+                toString += "(" + terms[i].toString() +")";
             } else {
                 toString += terms[i].toString();
             }
@@ -105,6 +140,41 @@ public class Product extends Expression {
 
     @Override
     public String toLaTeX() {
+        Expression num = Scalar.ONE,den = Scalar.ONE;
+        for (Expression term: terms){
+            if (term instanceof Fraction){
+                num = num.multiply(((Fraction) term).num);
+                den = den.multiply(((Fraction) term).den);
+            } else if (term instanceof Exponential && (((Exponential) term).exponent instanceof Scalar)) {
+                if (((Scalar) ((Exponential) term).exponent).isNegative()) {
+                    den = den.multiply(term.invert());
+                } else {
+                    num = num.multiply(term);
+                }
+            } else if (term instanceof Exponential && (((Exponential) term).exponent instanceof Fraction)){
+                if (((Fraction) ((Exponential) term).exponent).isNegative()){
+                    den = den.multiply(term.invert());
+                } else {
+                    num = num.multiply(term);
+                }
+            } else if (term instanceof Exponential && ((Exponential) term).exponent instanceof Product){
+                if (((Product) ((Exponential) term).exponent).getCoefficient().eval(null) < 0){
+                    den = den.multiply(term.invert());
+                } else {
+                    num = num.multiply(term);
+                }
+            } else {
+                num = num.multiply(term);
+            }
+        }
+        if (den.equals(Scalar.ONE)){
+            return basicToLaTeX();
+        } else {
+            return "\\frac{" + num.toLaTeX() + "}{" + den.toLaTeX() + "}";
+        }
+    }
+
+    private String basicToLaTeX(){
         String toLaTeX = "";
         for (int i = 0; i < terms.length;i++){
             if (terms[i].equals(Scalar.NEG_ONE)){
@@ -218,7 +288,7 @@ public class Product extends Expression {
 
     @Override
     boolean isPowCompatible(Expression e) {
-        return true;
+        return !e.equals(Scalar.NEG_ONE);
     }
 
     Expression getCoefficient(){

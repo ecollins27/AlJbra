@@ -103,6 +103,8 @@ public class Exponential extends Expression {
 
     @Override
     public Expression simplify() {
+        Expression simplifiedBase = base.simplify();
+        Expression simplifiedExponent = exponent.simplify();
         return base.simplify().pow(exponent.simplify());
     }
 

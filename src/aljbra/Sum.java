@@ -8,7 +8,7 @@ public class Sum extends Expression {
 
     Sum(Expression... terms){
         this.terms = terms;
-        Arrays.sort(this.terms,termComparator);
+        Arrays.sort(this.terms,null);
     }
     @Override
     public Expression negate() {
@@ -204,7 +204,7 @@ public class Sum extends Expression {
 
     @Override
     boolean isPowCompatible(Expression e) {
-        return e instanceof Scalar;
+        return e instanceof Scalar && !e.equals(Scalar.NEG_ONE);
     }
 
     private int indexOf(Expression e,ArrayList<Expression[]> arrayList){
