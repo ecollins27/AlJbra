@@ -1,10 +1,20 @@
 # AlJbra
 
-## Structure
-The AlJbra library represents all algebraic expressions as instances of the abstract class ```Expression```.
-The ```Expression``` class contains 7 different implementations: ```Scalar```,```Fraction```,```Variable```,```Constant```,```Sum```,```Product```, and ```Exponential```.
-All of these classes represent key aspects of algebra and last three -  ```Sum```, ```Product```, and ```Exponential``` - are
-defined recursively in terms of instances of other classes.
+## Dependencies
+AlJbra requires two additional libraries: [JMathTeX](https://jmathtex.sourceforge.net/) and its dependency [JDOM 1.0](http://www.jdom.org/downloads/index.html)
+Note that although new versions of JDOM are available, JMathTeX and this library require JDOM 1.0 and will NOT work with JDOM 2.0.  At the time of writing, the latest stable release is [JDOM 1.1.3](http://www.jdom.org/dist/binary/archive/jdom-1.1.3.zip)
+
+## Usage
+The AlJbra library represents all algebraic expressions as instances of one of 7 different core classes: ```Scalar```, ```Fraction```, ```Variable```, ```Constant```, ```Sum```, ```Product```, and ```Exponential```.  All of these classes extend the abstract class ```Expression``` from which all classes inherit basic methods such as ```.add(Expression e)```,```.subtract(Expression e)```,```.multiply(Expression e)```,```.divide(Expression e)```, ```.pow(Expression e```, and many more.  These classes all return ```Expression```.  Thus is it is strongly recommended when dealing with objects in the AlJbra library, to declare them as a generic ```Expression``` and avoid type casting since the class of a given algebraic expression may not always be intuitive.  For example:
+```java
+Variable x = new Variable("x"), y = new Variable("y"), z = new Variable("z");
+Product example = (Product)(x.add(y)).multiply(x.add(z));
+```
+Although example is in fact the product of two sums, this code with throw a ClassCastException since AlJbra will expand out all the terms instead of leaving it as a product of two sums.  Instead, example should be declared as an ```Expression``` with no type casting.
+```java
+Variable x = new Variable("x"), y = new Variable("y"), z = new Variable("z");
+Expression example = (x.add(y)).multiply(x.add(z));
+```
 
 ## Documentation
 ```java
