@@ -1,6 +1,8 @@
 import aljbra.*;
 import aljbra.unary.trig.Trig;
 
+import java.util.HashMap;
+
 public class Main {
 
     /*
@@ -8,9 +10,12 @@ public class Main {
      */
     public static void main(String[] args) {
         Variable x = new Variable("x");
-        Expression test = x.pow(x).pow(x).pow(x);
+        Expression test = Log.log(x,Trig.atan(x)).abs();
         Expression derivative = test.derivative(x).fullSimplify();
         System.out.println(derivative.toLaTeX());
+        HashMap<String,Double> map = new HashMap<>();
+        map.put("x",2.0);
+        System.out.println(test.eval(map));
     }
 
     public static Expression cubic(Expression A, Expression B, Expression C, Expression D){

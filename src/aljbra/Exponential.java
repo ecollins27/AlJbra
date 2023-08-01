@@ -153,17 +153,17 @@ public class Exponential extends Expression {
                 return true;
             } else if (exponent instanceof Scalar && ((Scalar) exponent).isNegative()){
                 if (((Exponential) e).exponent instanceof Scalar && ((Scalar) ((Exponential) e).exponent).isNegative()){
-                    return true;
+                    return base.isMultiplicationCompatible(((Exponential) e).base) || ((Exponential) e).base.isMultiplicationCompatible(base);
                 } else if (((Exponential) e).exponent instanceof Fraction && ((Fraction) ((Exponential) e).exponent).isNegative()){
-                    return true;
+                    return base.isMultiplicationCompatible(((Exponential) e).base) || ((Exponential) e).base.isMultiplicationCompatible(base);
                 } else {
                     return false;
                 }
             } else if (exponent instanceof Fraction && ((Fraction) exponent).isNegative()){
                 if (((Exponential) e).exponent instanceof Scalar && ((Scalar) ((Exponential) e).exponent).isNegative()){
-                    return true;
+                    return base.isMultiplicationCompatible(((Exponential) e).base) || ((Exponential) e).base.isMultiplicationCompatible(base);
                 } else if (((Exponential) e).exponent instanceof Fraction && ((Fraction) ((Exponential) e).exponent).isNegative()){
-                    return true;
+                    return base.isMultiplicationCompatible(((Exponential) e).base) || ((Exponential) e).base.isMultiplicationCompatible(base);
                 } else {
                     return false;
                 }

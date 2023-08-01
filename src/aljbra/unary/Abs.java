@@ -36,12 +36,12 @@ public class Abs extends Unary {
 
     @Override
     public String toString() {
-        return "|" + operand.toString() + "|";
+        return "" + operand.toString() + "|";
     }
 
     @Override
     public String toLaTeX() {
-        return "|" + operand.toLaTeX() + "|";
+        return "\\left|" + operand.toLaTeX() + "\\right|";
     }
 
     @Override
