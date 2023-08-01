@@ -7,8 +7,10 @@ public class Main {
     TODO:
      */
     public static void main(String[] args) {
-        Expression test = Log.ln(new Variable("x"));
-        System.out.println(test.fullSimplify().toLaTeX());
+        Variable x = new Variable("x");
+        Expression test = x.pow(x).pow(x).pow(x);
+        Expression derivative = test.derivative(x).fullSimplify();
+        System.out.println(derivative.toLaTeX());
     }
 
     public static Expression cubic(Expression A, Expression B, Expression C, Expression D){

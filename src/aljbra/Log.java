@@ -82,7 +82,7 @@ public class Log extends Expression {
     @Override
     public Expression derivative(Variable v) {
         if (base.equals(Constant.E)){
-            return operand.derivative(v).invert();
+            return operand.invert().multiply(operand.derivative(v));
         }
         return ln(operand).divide(ln(base)).derivative(v);
     }

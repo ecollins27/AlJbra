@@ -112,6 +112,8 @@ public abstract class Expression implements Comparable<Expression>{
     private final int getSimplificationIndex(){
         if (this instanceof Exponential && ((Exponential) this).exponent instanceof Fraction){
             return 4;
+        } else if (this instanceof Log){
+            return 4;
         }
         try {
             eval(null);
