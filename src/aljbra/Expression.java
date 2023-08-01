@@ -1,6 +1,6 @@
 package aljbra;
 
-import be.ugent.caagt.jmathtex.TeXFormula;
+import aljbra.unary.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 
 public abstract class Expression implements Comparable<Expression>{
@@ -63,9 +62,11 @@ public abstract class Expression implements Comparable<Expression>{
     public final Expression sqrt(){
         return this.nRoot(Scalar.TWO);
     }
+    public Expression abs(){return new Abs(this);}
     public final Expression nRoot(Expression e){
         return this.pow(e.invert());
     }
+    public abstract Expression derivative(Variable v);
     public abstract boolean equals(Expression e);
     public abstract double eval(HashMap<String,Double> values);
     public abstract boolean contains(Expression e);
@@ -82,46 +83,12 @@ public abstract class Expression implements Comparable<Expression>{
         }
         return simplified;
     }
-    public final void visualize(){
-        visualize("");
-    }
-    public final void visualize(String equationLabel){
-        TeXFormula formula = new TeXFormula(toLaTeX());
-        Icon icon = formula.createTeXIcon(0, 25.0F);
-        JLabel label = new JLabel(icon);
-        label.setForeground(Color.BLACK);
-        JPanel panel = new JPanel();
-        panel.add(label);
-        JFrame window = new JFrame(equationLabel);
-        window.setLocation((numOpened % 4) * defaultWidth,(numOpened / 5) * defaultHeight);
-        numOpened++;
-        window.setContentPane(panel);
-        window.setDefaultCloseOperation(3);
-        window.pack();
-        window.setVisible(true);
-    }
-    public final void save(String fileName){
-        TeXFormula formula = new TeXFormula(toLaTeX());
-        Icon icon = formula.createTeXIcon(0, 25.0F);
-        JLabel label = new JLabel(icon);
-        label.setForeground(Color.BLACK);
-        BufferedImage image = new BufferedImage(icon.getIconWidth() + 20,icon.getIconHeight() + 20,1);
-        Graphics2D g = image.createGraphics();
-        g.setColor(Color.WHITE);
-        g.fillRect(0,0,image.getWidth(),image.getHeight());
-        icon.paintIcon(label,g,10,10);
-        try {
-            ImageIO.write(image,"png",new File(fileName));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    abstract Expression __add__(Expression e);
-    abstract Expression __multiply__(Expression e);
-    abstract Expression __pow__(Expression e);
-    abstract boolean isAdditionCompatible(Expression e);
-    abstract boolean isMultiplicationCompatible(Expression e);
-    abstract boolean isPowCompatible(Expression e);
+    protected abstract Expression __add__(Expression e);
+    protected abstract Expression __multiply__(Expression e);
+    protected abstract Expression __pow__(Expression e);
+    protected abstract boolean isAdditionCompatible(Expression e);
+    protected abstract boolean isMultiplicationCompatible(Expression e);
+    protected abstract boolean isPowCompatible(Expression e);
 
     final static ArrayList<long[]> clone(ArrayList<long[]> arrayList){
         ArrayList<long[]> clone = new ArrayList<>();

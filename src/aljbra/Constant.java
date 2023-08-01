@@ -28,4 +28,9 @@ public class Constant extends Variable {
     public boolean equals(Expression e) {
         return e instanceof Constant && name.equals(((Constant) e).name) && ((Constant) e).value == value;
     }
+
+    @Override
+    public Expression derivative(Variable v) {
+        return Scalar.ZERO;
+    }
 }

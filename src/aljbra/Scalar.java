@@ -54,6 +54,11 @@ public class Scalar extends Expression {
     }
 
     @Override
+    public Expression derivative(Variable v) {
+        return Scalar.ZERO;
+    }
+
+    @Override
     public boolean equals(Expression e) {
         return e instanceof Scalar && ((Scalar) e).value == value;
     }
@@ -92,7 +97,7 @@ public class Scalar extends Expression {
     }
 
     @Override
-    Expression __add__(Expression e) {
+    protected Expression __add__(Expression e) {
         if (this.equals(ZERO)){
             return e;
         }
@@ -100,7 +105,7 @@ public class Scalar extends Expression {
     }
 
     @Override
-    Expression __multiply__(Expression e) {
+    protected Expression __multiply__(Expression e) {
         if (this.equals(ZERO)){
             return ZERO;
         } else if (this.equals(ONE)){
@@ -127,7 +132,7 @@ public class Scalar extends Expression {
     }
 
     @Override
-    Expression __pow__(Expression e) {
+    protected Expression __pow__(Expression e) {
         if (this.equals(ZERO) || this.equals(ONE)){
             return this;
         }
@@ -164,17 +169,17 @@ public class Scalar extends Expression {
     }
 
     @Override
-    boolean isAdditionCompatible(Expression e) {
+    protected boolean isAdditionCompatible(Expression e) {
         return this.equals(ZERO) || e instanceof Scalar;
     }
 
     @Override
-    boolean isMultiplicationCompatible(Expression e) {
+    protected boolean isMultiplicationCompatible(Expression e) {
         return this.equals(ZERO) || this.equals(ONE) || e instanceof Scalar;
     }
 
     @Override
-    boolean isPowCompatible(Expression e) {
+    protected boolean isPowCompatible(Expression e) {
         if (e instanceof Scalar){
             return true;
         } else if (e instanceof Fraction){

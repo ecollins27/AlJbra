@@ -2,7 +2,6 @@ package aljbra;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class Fraction extends Expression {
@@ -40,6 +39,11 @@ public class Fraction extends Expression {
     @Override
     public Expression invert() {
         return den.divide(num);
+    }
+
+    @Override
+    public Expression derivative(Variable v) {
+        return Scalar.ZERO;
     }
 
     @Override
@@ -87,7 +91,7 @@ public class Fraction extends Expression {
     }
 
     @Override
-    Expression __add__(Expression e) {
+    protected Expression __add__(Expression e) {
         Scalar num2,den2;
         if (e instanceof Scalar){
             num2 = (Scalar) e;
@@ -103,7 +107,7 @@ public class Fraction extends Expression {
     }
 
     @Override
-    Expression __multiply__(Expression e) {
+    protected Expression __multiply__(Expression e) {
         Scalar num2,den2;
         if (e instanceof Scalar){
             num2 = (Scalar) e;
@@ -123,22 +127,22 @@ public class Fraction extends Expression {
     }
 
     @Override
-    Expression __pow__(Expression e) {
+    protected Expression __pow__(Expression e) {
         return num.pow(e).divide(den.pow(e));
     }
 
     @Override
-    boolean isAdditionCompatible(Expression e) {
+    protected boolean isAdditionCompatible(Expression e) {
         return e instanceof Scalar || e instanceof Fraction;
     }
 
     @Override
-    boolean isMultiplicationCompatible(Expression e) {
+    protected boolean isMultiplicationCompatible(Expression e) {
         return e instanceof Scalar || e instanceof Fraction;
     }
 
     @Override
-    boolean isPowCompatible(Expression e) {
+    protected boolean isPowCompatible(Expression e) {
         return num.isPowCompatible(e) && den.isPowCompatible(e);
     }
 

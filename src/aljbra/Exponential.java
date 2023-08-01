@@ -1,5 +1,8 @@
 package aljbra;
 
+import aljbra.unary.trig.Cos;
+import aljbra.unary.trig.Sin;
+
 import java.util.HashMap;
 
 public class Exponential extends Expression {
@@ -21,6 +24,13 @@ public class Exponential extends Expression {
             return base;
         }
         return new Exponential(base,exponent.negate());
+    }
+
+    @Override
+    public Expression derivative(Variable v) {
+        Expression sum = exponent.divide(base).multiply(base.derivative(v));
+        sum = sum.add(Log.ln(base).multiply(exponent.derivative(v)));
+        return this.multiply(sum);
     }
 
     @Override
@@ -109,12 +119,12 @@ public class Exponential extends Expression {
     }
 
     @Override
-    Expression __add__(Expression e) {
+    protected Expression __add__(Expression e) {
         return null;
     }
 
     @Override
-    Expression __multiply__(Expression e) {
+    protected Expression __multiply__(Expression e) {
         if (e instanceof Exponential){
             if (base.equals(((Exponential) e).base)) {
                 return base.pow(exponent.add(((Exponential) e).exponent));
@@ -127,17 +137,17 @@ public class Exponential extends Expression {
     }
 
     @Override
-    Expression __pow__(Expression e) {
+    protected Expression __pow__(Expression e) {
         return base.pow(exponent.multiply(e));
     }
 
     @Override
-    boolean isAdditionCompatible(Expression e) {
+    protected boolean isAdditionCompatible(Expression e) {
         return false;
     }
 
     @Override
-    boolean isMultiplicationCompatible(Expression e) {
+    protected boolean isMultiplicationCompatible(Expression e) {
         if (e instanceof Exponential){
             if (base.equals(((Exponential) e).base)){
                 return true;
@@ -166,7 +176,7 @@ public class Exponential extends Expression {
     }
 
     @Override
-    boolean isPowCompatible(Expression e) {
+    protected boolean isPowCompatible(Expression e) {
         return true;
     }
 }

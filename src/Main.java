@@ -1,4 +1,5 @@
 import aljbra.*;
+import aljbra.unary.trig.Trig;
 
 public class Main {
 
@@ -6,14 +7,8 @@ public class Main {
     TODO:
      */
     public static void main(String[] args) {
-        Expression cubic = cubic(new Variable("a"),new Variable("b"),new Variable("c"),new Variable("d"));
-        cubic.save("Cubic Formula.png");
-        Expression solution = cubic.replace(new Variable("a"),Scalar.ONE);
-
-        solution = solution.replace(new Variable("b"),Scalar.ONE);
-        solution = solution.replace(new Variable("c"),Scalar.ONE);
-        solution = solution.replace(new Variable("d"),Scalar.ONE).fullSimplify();
-        solution.fullSimplify().visualize();
+        Expression test = Log.ln(new Variable("x"));
+        System.out.println(test.fullSimplify().toLaTeX());
     }
 
     public static Expression cubic(Expression A, Expression B, Expression C, Expression D){

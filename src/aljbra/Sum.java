@@ -25,6 +25,15 @@ public class Sum extends Expression {
     }
 
     @Override
+    public Expression derivative(Variable v) {
+        Expression sum = Scalar.ZERO;
+        for (Expression term: terms){
+            sum = sum.add(term.derivative(v));
+        }
+        return sum;
+    }
+
+    @Override
     public boolean equals(Expression e) {
         if (!(e instanceof Sum) || ((Sum) e).terms.length != terms.length){
             return false;
@@ -132,7 +141,7 @@ public class Sum extends Expression {
     }
 
     @Override
-    Expression __add__(Expression e) {
+    protected Expression __add__(Expression e) {
         if (e instanceof Sum){
             Expression sum = this;
             for (Expression eTerm: ((Sum) e).terms){
@@ -166,7 +175,7 @@ public class Sum extends Expression {
     }
 
     @Override
-    Expression __multiply__(Expression e) {
+    protected Expression __multiply__(Expression e) {
         if (e instanceof Sum){
             Expression sum = Scalar.ZERO;
             for (Expression eTerm: ((Sum) e).terms){
@@ -183,7 +192,7 @@ public class Sum extends Expression {
 
 
     @Override
-    Expression __pow__(Expression e) {
+    protected Expression __pow__(Expression e) {
         boolean shouldInvert = ((Scalar)e).isNegative();
         Expression product = Scalar.ONE;
         for (int i = 0; i < Math.abs(((Scalar)e).value);i++){
@@ -193,17 +202,17 @@ public class Sum extends Expression {
     }
 
     @Override
-    boolean isAdditionCompatible(Expression e) {
+    protected boolean isAdditionCompatible(Expression e) {
         return true;
     }
 
     @Override
-    boolean isMultiplicationCompatible(Expression e) {
+    protected boolean isMultiplicationCompatible(Expression e) {
         return true;
     }
 
     @Override
-    boolean isPowCompatible(Expression e) {
+    protected boolean isPowCompatible(Expression e) {
         return e instanceof Scalar && !e.equals(Scalar.NEG_ONE);
     }
 

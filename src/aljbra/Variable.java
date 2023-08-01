@@ -26,6 +26,11 @@ public class Variable extends Expression {
     }
 
     @Override
+    public Expression derivative(Variable v) {
+        return this.equals(v)? Scalar.ONE: Scalar.ZERO;
+    }
+
+    @Override
     public boolean equals(Expression e) {
         return e instanceof Variable && !(e instanceof Constant) && name.equals(((Variable)e).name);
     }
@@ -64,32 +69,32 @@ public class Variable extends Expression {
     }
 
     @Override
-    Expression __add__(Expression e) {
+    protected Expression __add__(Expression e) {
         return null;
     }
 
     @Override
-    Expression __multiply__(Expression e) {
+    protected Expression __multiply__(Expression e) {
         return null;
     }
 
     @Override
-    Expression __pow__(Expression e) {
+    protected Expression __pow__(Expression e) {
         return null;
     }
 
     @Override
-    boolean isAdditionCompatible(Expression e) {
+    protected boolean isAdditionCompatible(Expression e) {
         return false;
     }
 
     @Override
-    boolean isMultiplicationCompatible(Expression e) {
+    protected boolean isMultiplicationCompatible(Expression e) {
         return false;
     }
 
     @Override
-    boolean isPowCompatible(Expression e) {
+    protected boolean isPowCompatible(Expression e) {
         return false;
     }
 }

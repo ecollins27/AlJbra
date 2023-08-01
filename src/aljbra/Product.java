@@ -38,6 +38,23 @@ public class Product extends Expression {
     }
 
     @Override
+    public Expression derivative(Variable v) {
+        Expression sum = Scalar.ZERO;
+        for (int i = 0; i < terms.length;i++){
+            Expression product = Scalar.ONE;
+            for (int j = 0; j < terms.length;j++){
+                if (j == i){
+                    product = product.multiply(terms[j].derivative(v));
+                } else {
+                    product = product.multiply(terms[j]);
+                }
+            }
+            sum = sum.add(product);
+        }
+        return sum;
+    }
+
+    @Override
     public boolean equals(Expression e) {
         if (!(e instanceof Product) || ((Product) e).terms.length != terms.length){
             return false;
@@ -220,7 +237,7 @@ public class Product extends Expression {
     }
 
     @Override
-    Expression __add__(Expression e) {
+    protected Expression __add__(Expression e) {
         Expression coefficient = getCoefficient();
         Expression term = getTerm();
         if (e instanceof Product){
@@ -231,7 +248,7 @@ public class Product extends Expression {
     }
 
     @Override
-    Expression __multiply__(Expression e) {
+    protected Expression __multiply__(Expression e) {
         if (e instanceof Product){
             Expression product = this;
             for (Expression eTerm: ((Product) e).terms){
@@ -264,7 +281,7 @@ public class Product extends Expression {
     }
 
     @Override
-    Expression __pow__(Expression e) {
+    protected Expression __pow__(Expression e) {
         Expression product = Scalar.ONE;
         for (Expression term: terms){
             product = product.multiply(term.pow(e));
@@ -273,7 +290,7 @@ public class Product extends Expression {
     }
 
     @Override
-    boolean isAdditionCompatible(Expression e) {
+    protected boolean isAdditionCompatible(Expression e) {
         Expression term = getTerm();
         if (e instanceof Product){
             return ((Product) e).getTerm().equals(term);
@@ -282,12 +299,12 @@ public class Product extends Expression {
     }
 
     @Override
-    boolean isMultiplicationCompatible(Expression e) {
+    protected boolean isMultiplicationCompatible(Expression e) {
         return !(e instanceof Sum);
     }
 
     @Override
-    boolean isPowCompatible(Expression e) {
+    protected boolean isPowCompatible(Expression e) {
         return !e.equals(Scalar.NEG_ONE);
     }
 

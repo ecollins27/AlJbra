@@ -7,13 +7,11 @@ public class QuadraticExample {
     public static void main(String[] args){
         Expression a = new Variable("a"), b = new Variable("b"), c = new Variable("c");
         Expression quadraticFormula = quadratic(a,b,c);
-        quadraticFormula.save("Quadratic Formula.png");
 
         Expression aVal = Fraction.valueOf(1.3,true);
         Expression bVal = new Scalar(-7);
         Expression cVal = Scalar.TWO;
         Expression solution = quadraticFormula.replace(a,aVal).replace(b,bVal).replace(c,cVal);
-        solution.visualize("Solution to (4/3)x^2 - 7x + 2");
     }
 
     public static Expression quadratic(Expression A, Expression B, Expression C){
