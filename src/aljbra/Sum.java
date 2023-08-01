@@ -34,12 +34,12 @@ public class Sum extends Expression {
     }
 
     @Override
-    public boolean equals(Expression e) {
-        if (!(e instanceof Sum) || ((Sum) e).terms.length != terms.length){
+    public boolean equals(Object o) {
+        if (!(o instanceof Sum) || ((Sum) o).terms.length != terms.length){
             return false;
         }
         for (int i = 0; i < terms.length;i++){
-            if (!terms[i].equals(((Sum) e).terms[i])){
+            if (!terms[i].equals(((Sum) o).terms[i])){
                 return false;
             }
         }

@@ -2,12 +2,7 @@ package aljbra;
 
 import aljbra.unary.*;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -67,7 +62,7 @@ public abstract class Expression implements Comparable<Expression>{
         return this.pow(e.invert());
     }
     public abstract Expression derivative(Variable v);
-    public abstract boolean equals(Expression e);
+    public abstract boolean equals(Object o);
     public abstract double eval(HashMap<String,Double> values);
     public abstract boolean contains(Expression e);
     public abstract Expression replace(Expression e, Expression with);

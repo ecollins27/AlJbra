@@ -71,8 +71,8 @@ public abstract class Trig extends Unary {
     }
 
     @Override
-    public boolean equals(Expression e) {
-        return clazz.isInstance(e) && clazz.cast(e).operand.equals(operand);
+    public boolean equals(Object o) {
+        return clazz.isInstance(o) && clazz.cast(o).operand.equals(operand);
     }
 
     @Override

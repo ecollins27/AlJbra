@@ -5,7 +5,7 @@ import aljbra.Variable;
 
 public class Cos extends Trig {
 
-    public Cos(Expression e){
+    Cos(Expression e){
         super(e,Math::cos,Cos.class);
     }
 

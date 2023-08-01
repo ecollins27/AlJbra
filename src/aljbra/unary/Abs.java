@@ -1,7 +1,6 @@
 package aljbra.unary;
 
 import aljbra.Expression;
-import aljbra.Scalar;
 import aljbra.Variable;
 
 import java.util.HashMap;
@@ -17,8 +16,8 @@ public class Abs extends Unary {
     }
 
     @Override
-    public boolean equals(Expression e) {
-        return e instanceof Abs && operand.equals(((Abs) e).operand);
+    public boolean equals(Object o) {
+        return o instanceof Abs && operand.equals(((Abs) o).operand);
     }
 
     @Override

@@ -55,12 +55,12 @@ public class Product extends Expression {
     }
 
     @Override
-    public boolean equals(Expression e) {
-        if (!(e instanceof Product) || ((Product) e).terms.length != terms.length){
+    public boolean equals(Object o) {
+        if (!(o instanceof Product) || ((Product) o).terms.length != terms.length){
             return false;
         }
         for (int i = 0; i < terms.length;i++){
-            if (!terms[i].equals(((Product) e).terms[i])){
+            if (!terms[i].equals(((Product) o).terms[i])){
                 return false;
             }
         }

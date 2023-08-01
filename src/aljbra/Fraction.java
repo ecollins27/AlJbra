@@ -47,8 +47,8 @@ public class Fraction extends Expression {
     }
 
     @Override
-    public boolean equals(Expression e) {
-        return e instanceof Fraction && num.equals(((Fraction) e).num) && den.equals(((Fraction) e).den);
+    public boolean equals(Object o) {
+        return o instanceof Fraction && num.equals(((Fraction) o).num) && den.equals(((Fraction) o).den);
     }
 
     @Override

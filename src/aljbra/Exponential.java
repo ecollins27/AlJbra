@@ -1,8 +1,5 @@
 package aljbra;
 
-import aljbra.unary.trig.Cos;
-import aljbra.unary.trig.Sin;
-
 import java.util.HashMap;
 
 public class Exponential extends Expression {
@@ -34,8 +31,8 @@ public class Exponential extends Expression {
     }
 
     @Override
-    public boolean equals(Expression e) {
-        return e instanceof Exponential && base.equals(((Exponential) e).base) && exponent.equals(((Exponential) e).exponent);
+    public boolean equals(Object o) {
+        return o instanceof Exponential && base.equals(((Exponential) o).base) && exponent.equals(((Exponential) o).exponent);
     }
 
     @Override

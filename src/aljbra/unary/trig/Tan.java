@@ -6,7 +6,7 @@ import aljbra.Variable;
 
 public class Tan extends Trig {
 
-    public Tan(Expression e){
+    Tan(Expression e){
         super(e,Math::tan,Tan.class);
     }
 

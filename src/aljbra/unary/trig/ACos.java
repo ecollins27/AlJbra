@@ -6,7 +6,7 @@ import aljbra.Variable;
 
 public class ACos extends Trig {
 
-    public ACos(Expression e){
+    ACos(Expression e){
         super(e,Math::acos,ACos.class);
     }
 

@@ -6,7 +6,7 @@ import aljbra.Variable;
 
 public class ASin extends Trig {
 
-    public ASin(Expression e){
+    ASin(Expression e){
         super(e,Math::asin, ASin.class);
     }
 

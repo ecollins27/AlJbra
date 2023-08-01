@@ -88,8 +88,8 @@ public class Log extends Expression {
     }
 
     @Override
-    public boolean equals(Expression e) {
-        return e instanceof Log && ((Log) e).base.equals(base) && ((Log) e).operand.equals(operand);
+    public boolean equals(Object o) {
+        return o instanceof Log && ((Log) o).base.equals(base) && ((Log) o).operand.equals(operand);
     }
 
     @Override

@@ -25,8 +25,8 @@ public class Constant extends Variable {
     }
 
     @Override
-    public boolean equals(Expression e) {
-        return e instanceof Constant && name.equals(((Constant) e).name) && ((Constant) e).value == value;
+    public boolean equals(Object o) {
+        return o instanceof Constant && name.equals(((Constant) o).name) && ((Constant) o).value == value;
     }
 
     @Override

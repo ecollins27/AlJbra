@@ -4,7 +4,7 @@ import aljbra.Expression;
 import aljbra.Variable;
 
 public class Sin extends Trig {
-    public Sin(Expression e) {
+    Sin(Expression e) {
         super(e, Math::sin, Sin.class);
     }
 

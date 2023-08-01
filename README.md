@@ -1,20 +1,14 @@
 # AlJbra
 
 ## Dependencies
-AlJbra requires two additional libraries: [JMathTeX](https://jmathtex.sourceforge.net/) and its dependency [JDOM 1.0](http://www.jdom.org/downloads/index.html)
-Note that although new versions of JDOM are available, JMathTeX and this library require JDOM 1.0 and will NOT work with JDOM 2.0.  At the time of writing, the latest stable release is [JDOM 1.1.3](http://www.jdom.org/dist/binary/archive/jdom-1.1.3.zip)
+AlJbra no longer requires dependencies.  If AlJbra 1.0 is used, the following libraries are required:
 
-## Usage
-The AlJbra library represents all algebraic expressions as instances of one of 7 different core classes: ```Scalar```, ```Fraction```, ```Variable```, ```Constant```, ```Sum```, ```Product```, and ```Exponential```.  All of these classes extend the abstract class ```Expression``` from which all classes inherit basic methods such as ```.add(Expression e)```,```.subtract(Expression e)```,```.multiply(Expression e)```,```.divide(Expression e)```, ```.pow(Expression e```, and many more.  These classes all return ```Expression```.  Thus is it is strongly recommended when dealing with objects in the AlJbra library, to declare them as a generic ```Expression``` and avoid type casting since the class of a given algebraic expression may not always be intuitive.  For example:
-```java
-Variable x = new Variable("x"), y = new Variable("y"), z = new Variable("z");
-Product example = (Product)(x.add(y)).multiply(x.add(z));
-```
-Although example is in fact the product of two sums, this code with throw a ClassCastException since AlJbra will expand out all the terms instead of leaving it as a product of two sums.  Instead, example should be declared as an ```Expression``` with no type casting.
-```java
-Variable x = new Variable("x"), y = new Variable("y"), z = new Variable("z");
-Expression example = (x.add(y)).multiply(x.add(z));
-```
+[JMathTeX](https://jmathtex.sourceforge.net/)
+
+[JDOM 1.0](http://www.jdom.org/downloads/index.html)
+
+
+Note that although new versions of JDOM are available, JMathTeX and this library require JDOM 1.0 and will NOT work with JDOM 2.0.  At the time of writing, the latest stable release is [JDOM 1.1.3](http://www.jdom.org/dist/binary/archive/jdom-1.1.3.zip)
 
 ## Documentation
 ```java
@@ -29,6 +23,7 @@ public abstract class Expression {
     public Expression invert(); // returns inversion of called Expression
     public Expression sqrt(); // returns square root of called Expression
     public Expression nRoot(Expression e); // returns specified root of called Expression
+    public Expression abs(); // returns absolute value of called Expression
     public Expression simplify(); // returns next simplest form of Expression
     public Expression fullSimplify(); // returns simplest form of Expression.  Calls .simplify() until Expression is in simplest form
     public Expression toString(); // returns String form of Expression
@@ -36,9 +31,7 @@ public abstract class Expression {
     public double eval(HashMap<String,Double> values); // returns double approximation of Expression with specified mapping of variable names to double
     public boolean contains(Expression e); // returns if called Expression contains an instance(s) of specified Expression
     public boolean replace(Expression e, Expression with); // returns Expression in which all instances of Expression e are replaced with instances of Expression with
-    public void visualize(String equationLabel); // uses LaTeX to visualize called Expression in a new window with specified name
-    public void visualize(); // uses LaTeX to visualize called Expression in a new window with blank name
-    public void save(String fileName); // saves LaTeX visualization of called Expression as png with specified file name
+    public Expression derivative(Variable v); // returns the derivative of the called Expression with respect to specified Variable
     public boolean equals(Expression e); // returns if specified Expression is identifal to called Expression
 }
 ```
@@ -58,7 +51,8 @@ public class Scalar extends Expression {
 ```java
 public class Fraction extends Expression {
     
-    public static Expression valueOf(double n, boolean repeating);  // returns fractional value of specified decimal. If decimal approximation is infinite, provide one repetition and set repeating to true
+    public static Expression valueOf(double n, boolean repeating);  // returns fractional value of specified decimal. If decimal approximation is infinite, set repeating to true
+
 }
 ```
 ```java
@@ -77,5 +71,25 @@ public class Constant extends Variable { // Constants act identical to variables
 
     public Constant(String name, double value); // constructs Constant with specifed String name and double value
     public Constant(String name, String laTeXName, double value); // constructs Constant with specified String name, String laTeXName, and double value
+}
+```
+```java
+public class Log extends Expression {
+    
+    public static Expression log(Expression base, Expression operand); // returns logarithm with specified base and operand
+    public static Expression ln(Expression operand); // returns natural logarithm (base e) with specified operand
+    
+}
+```
+
+```java
+public abstract class Trig extends Expression {
+
+    public static Expression sin(Expression e); // returns the sine of specified Expression
+    public static Expression cos(Expression e); // returns the cosine of specified Expression
+    public static Expression tan(Expression e); // returns the tangent of specified Expression
+    public static Expression asin(Expression e); // returns the arcsine of specified Expression
+    public static Expression acos(Expression e); // returns the arccosine of specified Expression
+    public static Expression atan(Expression e); // returns the arctangent of specified Expression
 }
 ```

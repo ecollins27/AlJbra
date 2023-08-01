@@ -59,8 +59,8 @@ public class Scalar extends Expression {
     }
 
     @Override
-    public boolean equals(Expression e) {
-        return e instanceof Scalar && ((Scalar) e).value == value;
+    public boolean equals(Object o) {
+        return o instanceof Scalar && ((Scalar) o).value == value;
     }
 
     @Override

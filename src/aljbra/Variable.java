@@ -31,8 +31,8 @@ public class Variable extends Expression {
     }
 
     @Override
-    public boolean equals(Expression e) {
-        return e instanceof Variable && !(e instanceof Constant) && name.equals(((Variable)e).name);
+    public boolean equals(Object o) {
+        return o instanceof Variable && !(o instanceof Constant) && name.equals(((Variable) o).name);
     }
 
     @Override
