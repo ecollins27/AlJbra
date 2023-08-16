@@ -15,6 +15,14 @@ public class Variable extends Expression {
         this.name = name;
         this.laTeXName = laTeXName;
     }
+
+    public String getName(){
+        return name;
+    }
+
+    public String getLaTeXName(){
+        return laTeXName;
+    }
     @Override
     public Expression negate() {
         return this.multiply(Scalar.NEG_ONE);

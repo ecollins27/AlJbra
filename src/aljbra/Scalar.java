@@ -33,6 +33,10 @@ public class Scalar extends Expression {
             value *= Math.pow(factor[0],factor[1]);
         }
     }
+
+    public long getValue(){
+        return value;
+    }
     @Override
     public Expression negate() {
         ArrayList<long[]> primeFactors = clone(primeFactorization);

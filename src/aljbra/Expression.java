@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class Expression implements Comparable<Expression>{
-    private static int numOpened = 0;
-    private final static int defaultWidth = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width / 4;
-    private final static int defaultHeight = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height / 5;
 
     public final Expression add(Expression e){
         if (e.equals(Scalar.ZERO)){

@@ -19,6 +19,10 @@ public class Constant extends Variable {
         this.value = value;
     }
 
+    public double getValue() {
+        return value;
+    }
+
     @Override
     public double eval(HashMap<String, Double> values) {
         return value;
