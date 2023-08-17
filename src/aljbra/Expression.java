@@ -75,6 +75,7 @@ public abstract class Expression implements Comparable<Expression>{
         }
         return simplified;
     }
+    public abstract boolean isEvaluable();
     protected abstract Expression __add__(Expression e);
     protected abstract Expression __multiply__(Expression e);
     protected abstract Expression __pow__(Expression e);

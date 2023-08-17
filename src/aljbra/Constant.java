@@ -24,6 +24,11 @@ public class Constant extends Variable {
     }
 
     @Override
+    public boolean isEvaluable() {
+        return true;
+    }
+
+    @Override
     public double eval(HashMap<String, Double> values) {
         return value;
     }

@@ -116,6 +116,11 @@ public class Exponential extends Expression {
     }
 
     @Override
+    public boolean isEvaluable() {
+        return base.isEvaluable() && exponent.isEvaluable();
+    }
+
+    @Override
     protected Expression __add__(Expression e) {
         return null;
     }

@@ -139,6 +139,11 @@ public class Log extends Expression {
     }
 
     @Override
+    public boolean isEvaluable() {
+        return base.isEvaluable() && operand.isEvaluable();
+    }
+
+    @Override
     protected Expression __add__(Expression e) {
         return null;
     }

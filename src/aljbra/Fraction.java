@@ -12,8 +12,8 @@ public class Fraction extends Expression {
         this.num = num;
         this.den = den;
         if (this.den.isNegative()){
-            den = (Scalar) den.negate();
-            num = (Scalar) num.negate();
+            this.den = (Scalar) den.negate();
+            this.num = (Scalar) num.negate();
         }
     }
 
@@ -88,6 +88,11 @@ public class Fraction extends Expression {
         ArrayList<long[]> denFactors = clone(den.primeFactorization);
         simplify(numFactors,denFactors);
         return new Scalar(numFactors).divide(new Scalar(denFactors));
+    }
+
+    @Override
+    public boolean isEvaluable() {
+        return true;
     }
 
     @Override

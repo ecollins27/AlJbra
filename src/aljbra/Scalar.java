@@ -101,6 +101,11 @@ public class Scalar extends Expression {
     }
 
     @Override
+    public boolean isEvaluable() {
+        return true;
+    }
+
+    @Override
     protected Expression __add__(Expression e) {
         if (this.equals(ZERO)){
             return e;

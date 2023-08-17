@@ -33,6 +33,11 @@ public abstract class Unary extends Expression {
     }
 
     @Override
+    public boolean isEvaluable() {
+        return operand.isEvaluable();
+    }
+
+    @Override
     protected Expression __add__(Expression e) {
         return null;
     }

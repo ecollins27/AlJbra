@@ -77,6 +77,11 @@ public class Variable extends Expression {
     }
 
     @Override
+    public boolean isEvaluable() {
+        return false;
+    }
+
+    @Override
     protected Expression __add__(Expression e) {
         return null;
     }

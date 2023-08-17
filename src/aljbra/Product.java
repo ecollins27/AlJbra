@@ -237,6 +237,16 @@ public class Product extends Expression {
     }
 
     @Override
+    public boolean isEvaluable() {
+        for (Expression term: terms){
+            if (!term.isEvaluable()){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
     protected Expression __add__(Expression e) {
         Expression coefficient = getCoefficient();
         Expression term = getTerm();

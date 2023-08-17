@@ -26,6 +26,7 @@ public abstract class Expression {
     public Expression abs(); // returns absolute value of called Expression
     public Expression simplify(); // returns next simplest form of Expression
     public Expression fullSimplify(); // returns simplest form of Expression.  Calls .simplify() until Expression is in simplest form
+    public boolean isEvaluable(); // returns true is Expression contains no Variables
     public Expression toString(); // returns String form of Expression
     public Expression toLaTeX(); // returns Expression as LaTeX String
     public double eval(HashMap<String,Double> values); // returns double approximation of Expression with specified mapping of variable names to double
