@@ -1,7 +1,7 @@
 # AlJbra
 
 ## Dependencies
-AlJbra no longer requires dependencies.  If AlJbra 1.0 is used, the following libraries are required:
+AlJbra 1.1+ no longer requires dependencies.  If AlJbra 1.0 is used, the following libraries are required:
 
 [JMathTeX](https://jmathtex.sourceforge.net/)
 
@@ -39,7 +39,7 @@ public abstract class Expression {
 ```java
 public class Scalar extends Expression {
 
-    public final static Scalar NEG_ONE; // Scalar of value //1
+    public final static Scalar NEG_ONE; // Scalar of value -1
     public final static Scalar ZERO; // Scalar of value 0
     public final static Scalar ONE; // Scalar of value 1
     public final static Scalar TWO; // Scalar of value 2
@@ -61,6 +61,9 @@ public class Variable extends Expression {
 
     public Variable(String name); // constructs Variable with specified String name and matching name in LaTeX
     public Variable(String name, String laTeXName); // constructs Variable with specified String name and specified String laTeXName
+
+    public String getName(); // returns name of Variable
+    public String getLaTeXName(); // returns name of Variable in LaTeX
 }
 ```
 ```java
@@ -72,6 +75,8 @@ public class Constant extends Variable { // Constants act identical to variables
 
     public Constant(String name, double value); // constructs Constant with specifed String name and double value
     public Constant(String name, String laTeXName, double value); // constructs Constant with specified String name, String laTeXName, and double value
+
+    public double getValue(); // returns value of Constant
 }
 ```
 ```java
