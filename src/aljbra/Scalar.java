@@ -169,10 +169,19 @@ public class Scalar extends Expression {
             }
         }
         Expression product;
+        Scalar rootScalar = new Scalar(rootFactors);
         if (shouldInvert){
-            product = new Scalar(coefficientFactors).invert().multiply(new Exponential(new Scalar(rootFactors),new Scalar(root).invert().negate()));
+            if (rootScalar.equals(Scalar.ONE)){
+                product = new Scalar(coefficientFactors).invert();
+            } else {
+                product = new Scalar(coefficientFactors).invert().multiply(new Exponential(rootScalar, new Scalar(root).invert().negate()));
+            }
         } else {
-            product = new Scalar(coefficientFactors).multiply(new Exponential(new Scalar(rootFactors),new Scalar(root).invert()));
+            if (rootScalar.equals(Scalar.ONE)){
+                product = new Scalar(coefficientFactors);
+            } else {
+                product = new Scalar(coefficientFactors).multiply(new Exponential(rootScalar, new Scalar(root).invert()));
+            }
         }
         return product;
     }

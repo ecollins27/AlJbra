@@ -16,7 +16,7 @@ public abstract class Unary extends Expression {
 
     @Override
     public Expression negate() {
-        return this.pow(Scalar.NEG_ONE);
+        return this.multiply(Scalar.NEG_ONE);
     }
 
     @Override
