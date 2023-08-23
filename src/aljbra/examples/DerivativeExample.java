@@ -15,12 +15,13 @@ public class DerivativeExample {
         // Construct f and its gradient
         Variable x = new Variable("x"), y = new Variable("y"), z = new Variable("z");
         Expression F = Trig.cos((Scalar.TWO.multiply(x).add(y).add(new Scalar(5).multiply(z))).pow(Scalar.TWO)).fullSimplify();
-        System.out.println("f(x,y,z) = " + F.toLaTeX());
+        System.out.println("f(x,y,z) = " + F);
         Expression[] gradient = new Expression[]{
                 F.derivative(x).fullSimplify(),
                 F.derivative(y).fullSimplify(),
                 F.derivative(z).fullSimplify()
         };
+
         // replace x,y,z with precise values and simplify gradient
         Expression xValue = new Scalar(3);
         Expression yValue = Scalar.NEG_ONE;

@@ -1,15 +1,5 @@
 # AlJbra
 
-## Dependencies
-AlJbra 1.1+ no longer requires dependencies.  If AlJbra 1.0 is used, the following libraries are required:
-
-[JMathTeX](https://jmathtex.sourceforge.net/)
-
-[JDOM 1.0](http://www.jdom.org/downloads/index.html)
-
-
-Note that although new versions of JDOM are available, JMathTeX and this library require JDOM 1.0 and will NOT work with JDOM 2.0.  At the time of writing, the latest stable release is [JDOM 1.1.3](http://www.jdom.org/dist/binary/archive/jdom-1.1.3.zip)
-
 ## Documentation
 ```java
 public abstract class Expression {

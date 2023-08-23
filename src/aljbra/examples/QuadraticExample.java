@@ -11,7 +11,7 @@ public class QuadraticExample {
         Expression aVal = Fraction.valueOf(1.3,true);
         Expression bVal = new Scalar(-7);
         Expression cVal = Scalar.TWO;
-        Expression solution = quadraticFormula.replace(a,aVal).replace(b,bVal).replace(c,cVal);
+        Expression solution = quadraticFormula.replace(a,aVal).replace(b,bVal).replace(c,cVal).fullSimplify();
 
         System.out.println("The solution to 4/3 * x^2 - 7x + 2 is " + solution.toLaTeX() + " in LaTeX");
         System.out.println("The decimal approximation is " + solution.eval(null));
