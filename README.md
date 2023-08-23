@@ -12,6 +12,8 @@ public abstract class Expression {
     public Expression negate(); // returns negation of called Expression
     public Expression invert(); // returns inversion of called Expression
     public Expression sqrt(); // returns square root of called Expression
+    public Expression sq(); // returns the square of called Expression
+    public Expression exp(); // returns e raised to called Expression
     public Expression nRoot(Expression e); // returns specified root of called Expression
     public Expression abs(); // returns absolute value of called Expression
     public Expression simplify(); // returns next simplest form of Expression
@@ -36,13 +38,14 @@ public class Scalar extends Expression {
 
     public Scalar(long value); // constructs Scalar with specified long value
 
-    public long[][] primeFactorization(); // returns array of long pairs containing the prime and raised power respectively
+    public ArrayList<long[]> primeFactorization(); // returns ArrayList of long pairs containing a prime factor and its associated power respectively
 }
 ```
 ```java
 public class Fraction extends Expression {
     
-    public static Expression valueOf(double n, boolean repeating);  // returns fractional value of specified decimal. If decimal approximation is infinite, set repeating to true
+    public static Expression valueOf(double n);  // returns fractional value of specified decimal
+    public static Expression valueOf(double n, int repeatingLength); // returns fractional value of specified decimal assuming the last specified number of digits repeat infinitely
 
 }
 ```

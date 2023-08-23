@@ -24,8 +24,8 @@ public class Log extends Expression {
                     return log(base,operand.invert()).negate();
                 }
             } else if (operand instanceof Scalar){
-                ArrayList<long[]> baseFactors = clone(((Scalar) base).primeFactorization);
-                ArrayList<long[]> operandFactors = clone(((Scalar) operand).primeFactorization);
+                ArrayList<long[]> baseFactors = ((Scalar) base).primeFactorization();
+                ArrayList<long[]> operandFactors = ((Scalar) operand).primeFactorization();
                 long minCount = Long.MAX_VALUE;
                 for (long[] factor: baseFactors){
                     int index = indexOf(factor[0],operandFactors);

@@ -54,6 +54,8 @@ public abstract class Expression implements Comparable<Expression>{
     public final Expression sqrt(){
         return this.nRoot(Scalar.TWO);
     }
+    public final Expression sq(){return this.pow(Scalar.TWO);}
+    public final Expression exp(){return Constant.E.pow(this);};
     public Expression abs(){return new Abs(this);}
     public final Expression nRoot(Expression e){
         return this.pow(e.invert());

@@ -120,7 +120,7 @@ public class Scalar extends Expression {
         } else if (this.equals(ONE)){
             return e;
         }
-        ArrayList<long[]> primeFactors = merge(primeFactorization,((Scalar)e).primeFactorization);
+        ArrayList<long[]> primeFactors = merge(primeFactorization,((Scalar)e).primeFactorization());
         return new Scalar(primeFactors);
     }
 
@@ -134,7 +134,7 @@ public class Scalar extends Expression {
                     primeFactors.get(index)[1] = primeFactors.get(index)[1] % 2;
                 }
             } else {
-                primeFactors.add(factor);
+                primeFactors.add(factor.clone());
             }
         }
         return primeFactors;
@@ -213,8 +213,8 @@ public class Scalar extends Expression {
         return false;
     }
 
-    public long[][] primeFactorization(){
-        return clone(primeFactorization).toArray(new long[0][0]);
+    public ArrayList<long[]> primeFactorization(){
+        return clone(primeFactorization);
     }
 
     private static ArrayList<long[]> getPrimeFactorization(long n){

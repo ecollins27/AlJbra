@@ -17,7 +17,7 @@ public class Fraction extends Expression {
         }
     }
 
-    public static Expression valueOf(double n, boolean repeating){
+    public static Expression valueOf(double n){
         Scalar constant = new Scalar((long)n);
         BigDecimal num = BigDecimal.valueOf(n).remainder(BigDecimal.ONE);
         int length = 0;
@@ -25,11 +25,30 @@ public class Fraction extends Expression {
             num = num.scaleByPowerOfTen(1);
             length++;
         }
-        if (repeating){
-            return constant.add(new Scalar(num.longValue()).divide(new Scalar((long)(Math.pow(10,length) - 1))));
-        } else {
-            return constant.add(new Scalar(num.longValue()).divide(new Scalar((long)Math.pow(10,length))));
+        return constant.add(new Scalar(num.longValue()).divide(new Scalar((long)Math.pow(10,length))));
+    }
+    public static Expression valueOf(double n, int repeatingLength){
+        BigDecimal num = BigDecimal.valueOf(n);
+        if (repeatingLength > getNumDecimalDigits(num)){
+            throw new RuntimeException("Repetition length must be less than or equal to the number of digits right of decimal point");
         }
+        int length = 0;
+        while (getNumDecimalDigits(num) > repeatingLength){
+            num = num.scaleByPowerOfTen(1);
+            length++;
+        }
+        Scalar constant = new Scalar(num.longValue());
+        BigDecimal decimal = num.remainder(BigDecimal.ONE).scaleByPowerOfTen(repeatingLength);
+        return constant.add(new Scalar(decimal.longValue()).divide(new Scalar((long)(Math.pow(10,repeatingLength) - 1)))).divide(new Scalar((long)(Math.pow(10,length))));
+    }
+
+    private static int getNumDecimalDigits(BigDecimal n){
+        int length = 0;
+        while (n.remainder(BigDecimal.ONE).compareTo(BigDecimal.ZERO) != 0){
+            n = n.scaleByPowerOfTen(1);
+            length++;
+        }
+        return length;
     }
     @Override
     public Expression negate() {
@@ -84,8 +103,8 @@ public class Fraction extends Expression {
 
     @Override
     public Expression simplify() {
-        ArrayList<long[]> numFactors = clone(num.primeFactorization);
-        ArrayList<long[]> denFactors = clone(den.primeFactorization);
+        ArrayList<long[]> numFactors = num.primeFactorization();
+        ArrayList<long[]> denFactors = den.primeFactorization();
         simplify(numFactors,denFactors);
         return new Scalar(numFactors).divide(new Scalar(denFactors));
     }
@@ -121,8 +140,8 @@ public class Fraction extends Expression {
             num2 = ((Fraction) e).num;
             den2 = ((Fraction) e).den;
         }
-        ArrayList<long[]> multipliedNum = Scalar.merge(num.primeFactorization,num2.primeFactorization);
-        ArrayList<long[]> multipliedDen = Scalar.merge(den.primeFactorization,den2.primeFactorization);
+        ArrayList<long[]> multipliedNum = Scalar.merge(num.primeFactorization(),num2.primeFactorization());
+        ArrayList<long[]> multipliedDen = Scalar.merge(den.primeFactorization(),den2.primeFactorization());
         simplify(multipliedNum,multipliedDen);
         if (multipliedDen.size() > 0) {
             return new Fraction(new Scalar(multipliedNum), new Scalar(multipliedDen));
@@ -161,9 +180,9 @@ public class Fraction extends Expression {
     }
 
     private Scalar lcm(Scalar a, Scalar b){
-        ArrayList<long[]> primeFactors = clone(a.primeFactorization);
-        for (int i = 0; i < b.primeFactorization.size();i++){
-            long[] factor = b.primeFactorization.get(i);
+        ArrayList<long[]> primeFactors = a.primeFactorization();
+        for (int i = 0; i < b.primeFactorization().size();i++){
+            long[] factor = b.primeFactorization().get(i);
             int index = indexOf(factor[0],primeFactors);
             if (index == -1){
                 primeFactors.add(factor);
@@ -179,9 +198,9 @@ public class Fraction extends Expression {
     }
 
     private Scalar getFactor(Scalar lcm, Scalar num){
-        ArrayList<long[]> primeFactors = clone(lcm.primeFactorization);
-        for (int i = 0; i < num.primeFactorization.size();i++){
-            long[] factor = num.primeFactorization.get(i);
+        ArrayList<long[]> primeFactors = lcm.primeFactorization();
+        for (int i = 0; i < num.primeFactorization().size();i++){
+            long[] factor = num.primeFactorization().get(i);
             int index = indexOf(factor[0],primeFactors);
             if (factor[1] == primeFactors.get(index)[1]){
                 primeFactors.remove(index);
