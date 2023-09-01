@@ -6,6 +6,6 @@ import java.util.HashMap;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println(Fraction.valueOf(1.313,2));
+        System.out.println(Scalar.NEG_ONE.multiply(new Variable("x")));
     }
 }

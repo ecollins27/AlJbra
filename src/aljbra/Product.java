@@ -140,10 +140,9 @@ public class Product extends Expression {
     private String basicToString(){
         String toString = "";
         for (int i = 0; i < terms.length;i++){
-            if (i > 0 && !terms[i].equals(Scalar.NEG_ONE)){
+            if (!toString.isEmpty() && !toString.equals("-") && !terms[i].equals(Scalar.NEG_ONE)){
                 toString += " * ";
             }
-
             if (terms[i].equals(Scalar.NEG_ONE)){
                 toString = "-" + toString;
             } else if (terms[i] instanceof Sum && ((Sum) terms[i]).terms.length > 1) {
