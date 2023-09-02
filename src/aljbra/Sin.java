@@ -1,9 +1,6 @@
-package aljbra.unary.trig;
+package aljbra;
 
-import aljbra.Expression;
-import aljbra.Variable;
-
-public class Sin extends Trig {
+class Sin extends Trig {
     Sin(Expression e) {
         super(e, Math::sin, Sin.class);
     }

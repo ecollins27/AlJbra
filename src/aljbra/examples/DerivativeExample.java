@@ -4,10 +4,7 @@ import aljbra.Constant;
 import aljbra.Expression;
 import aljbra.Scalar;
 import aljbra.Variable;
-import aljbra.unary.trig.Trig;
-
-import java.util.Arrays;
-import java.util.HashMap;
+import aljbra.Trig;
 
 public class DerivativeExample {
 

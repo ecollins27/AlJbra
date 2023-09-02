@@ -2,7 +2,7 @@ package aljbra;
 
 import java.util.HashMap;
 
-public class Exponential extends Expression {
+class Exponential extends Expression {
 
     Expression base,exponent;
 

@@ -1,10 +1,6 @@
-package aljbra.unary.trig;
+package aljbra;
 
-import aljbra.Expression;
-import aljbra.Scalar;
-import aljbra.Variable;
-
-public class Tan extends Trig {
+class Tan extends Trig {
 
     Tan(Expression e){
         super(e,Math::tan,Tan.class);

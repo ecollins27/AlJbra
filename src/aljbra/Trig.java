@@ -1,7 +1,4 @@
-package aljbra.unary.trig;
-
-import aljbra.Expression;
-import aljbra.unary.Unary;
+package aljbra;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;

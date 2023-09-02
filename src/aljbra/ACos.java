@@ -1,10 +1,6 @@
-package aljbra.unary.trig;
+package aljbra;
 
-import aljbra.Expression;
-import aljbra.Scalar;
-import aljbra.Variable;
-
-public class ACos extends Trig {
+class ACos extends Trig {
 
     ACos(Expression e){
         super(e,Math::acos,ACos.class);

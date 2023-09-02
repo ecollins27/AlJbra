@@ -2,7 +2,7 @@ package aljbra;
 
 import java.util.*;
 
-public class Product extends Expression {
+class Product extends Expression {
 
     Expression[] terms;
 

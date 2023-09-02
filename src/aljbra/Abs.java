@@ -1,11 +1,8 @@
-package aljbra.unary;
-
-import aljbra.Expression;
-import aljbra.Variable;
+package aljbra;
 
 import java.util.HashMap;
 
-public class Abs extends Unary {
+class Abs extends Unary {
     public Abs(Expression e) {
         super(e);
     }

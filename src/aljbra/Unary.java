@@ -1,4 +1,4 @@
-package aljbra.unary;
+package aljbra;
 
 import aljbra.Expression;
 import aljbra.Scalar;
@@ -6,7 +6,7 @@ import aljbra.Scalar;
 import java.util.HashMap;
 import java.util.function.Function;
 
-public abstract class Unary extends Expression {
+abstract class Unary extends Expression {
 
     protected Expression operand;
 

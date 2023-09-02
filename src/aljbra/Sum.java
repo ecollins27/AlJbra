@@ -2,7 +2,7 @@ package aljbra;
 
 import java.util.*;
 
-public class Sum extends Expression {
+class Sum extends Expression {
 
     Expression[] terms;
 
