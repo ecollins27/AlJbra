@@ -44,4 +44,9 @@ class Abs extends Unary {
     public Expression simplify() {
         return operand.simplify().abs();
     }
+
+    @Override
+    public Expression abs() {
+        return this;
+    }
 }

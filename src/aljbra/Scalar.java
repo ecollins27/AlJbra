@@ -106,6 +106,16 @@ public class Scalar extends Expression {
     }
 
     @Override
+    public Expression abs() {
+        ArrayList<long[]> primeFactors = clone(primeFactorization);
+        int index = indexOf(-1,primeFactors);
+        if (index >= 0){
+            primeFactors.remove(index);
+        }
+        return new Scalar(primeFactors);
+    }
+
+    @Override
     protected Expression __add__(Expression e) {
         if (this.equals(ZERO)){
             return e;
@@ -144,6 +154,8 @@ public class Scalar extends Expression {
     protected Expression __pow__(Expression e) {
         if (this.equals(ZERO) || this.equals(ONE)){
             return this;
+        } else if (e instanceof Decimal){
+            return new Decimal(Math.pow(value,((Decimal) e).value));
         }
         boolean shouldInvert;
         long pow,root;
@@ -198,7 +210,7 @@ public class Scalar extends Expression {
 
     @Override
     protected boolean isPowCompatible(Expression e) {
-        if (e instanceof Scalar){
+        if (e instanceof Scalar || e instanceof Decimal){
             return true;
         } else if (e instanceof Fraction){
             long pow = Math.abs(((Scalar)((Fraction)e).num).value);

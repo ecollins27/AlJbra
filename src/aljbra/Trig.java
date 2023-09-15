@@ -2,42 +2,55 @@ package aljbra;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.function.Function;
 
 public abstract class Trig extends Unary {
 
     public static Expression cos(Expression e){
         if (e instanceof ACos){
             return ((ACos) e).operand;
+        } else if (e instanceof Decimal){
+            return new Decimal(Math.cos(((Decimal) e).value));
         }
         return new Cos(e);
     }
     public static Expression sin(Expression e){
         if (e instanceof ASin){
             return ((ASin) e).operand;
+        } else if (e instanceof Decimal){
+            return new Decimal(Math.sin(((Decimal) e).value));
         }
         return new Sin(e);
     }
     public static Expression tan(Expression e){
         if (e instanceof ATan){
             return ((ATan) e).operand;
+        } else if (e instanceof Decimal){
+            return new Decimal(Math.tan(((Decimal) e).value));
         }
         return new Tan(e);
     }
     public static Expression acos(Expression e){
         if (e instanceof Cos){
             return ((Cos) e).operand;
+        } else if (e instanceof Decimal){
+            return new Decimal(Math.acos(((Decimal) e).value));
         }
         return new ACos(e);
     }
     public static Expression asin(Expression e){
         if (e instanceof Sin){
             return ((Sin) e).operand;
+        } else if (e instanceof Decimal){
+            return new Decimal(Math.asin(((Decimal) e).value));
         }
         return new ASin(e);
     }
     public static Expression atan(Expression e){
         if (e instanceof Tan){
             return ((Tan) e).operand;
+        } else if (e instanceof Decimal){
+            return new Decimal(Math.atan(((Decimal) e).value));
         }
         return new ATan(e);
     }
@@ -98,8 +111,10 @@ public abstract class Trig extends Unary {
     @Override
     public Expression simplify() {
         Expression simplifiedOperand = operand.simplify();
-        if (inverseClass.isInstance(simplifiedOperand)){
+        if (inverseClass.isInstance(simplifiedOperand)) {
             return simplifiedOperand;
+        } else if (simplifiedOperand instanceof Decimal){
+            return new Decimal(function.eval(((Decimal) simplifiedOperand).value));
         } else {
             return newInstance(simplifiedOperand);
         }

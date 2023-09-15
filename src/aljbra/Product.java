@@ -320,7 +320,7 @@ class Product extends Expression {
     Expression getCoefficient(){
         Expression coefficient = Scalar.ONE;
         for (Expression term: terms){
-            if (term instanceof Fraction || term instanceof Scalar){
+            if (term instanceof Fraction || term instanceof Scalar || term instanceof Decimal){
                 coefficient = coefficient.multiply(term);
             }
         }
@@ -330,7 +330,7 @@ class Product extends Expression {
     Expression getTerm(){
         Expression term = Scalar.ONE;
         for (Expression expression: terms){
-            if (!(expression instanceof Scalar) && !(expression instanceof Fraction)){
+            if (!(expression instanceof Scalar) && !(expression instanceof Fraction) && !(expression instanceof Decimal)){
                 term = term.multiply(expression);
             }
         }

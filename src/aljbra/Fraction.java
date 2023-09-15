@@ -1,6 +1,7 @@
 package aljbra;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -72,7 +73,8 @@ public class Fraction extends Expression {
 
     @Override
     public double eval(HashMap<String, Double> values) {
-        return num.eval(values) / den.eval(values);
+        BigDecimal quotient = BigDecimal.valueOf(num.eval(values)).divide(BigDecimal.valueOf(den.eval(values)), MathContext.DECIMAL128);
+        return quotient.doubleValue();
     }
 
     @Override
@@ -115,6 +117,11 @@ public class Fraction extends Expression {
     }
 
     @Override
+    public Expression abs() {
+        return num.abs().divide(den);
+    }
+
+    @Override
     protected Expression __add__(Expression e) {
         Scalar num2,den2;
         if (e instanceof Scalar){
@@ -152,6 +159,9 @@ public class Fraction extends Expression {
 
     @Override
     protected Expression __pow__(Expression e) {
+        if (e instanceof Decimal){
+            return new Decimal(Math.pow(this.eval(null),((Decimal) e).value));
+        }
         return num.pow(e).divide(den.pow(e));
     }
 
@@ -167,7 +177,7 @@ public class Fraction extends Expression {
 
     @Override
     protected boolean isPowCompatible(Expression e) {
-        return num.isPowCompatible(e) && den.isPowCompatible(e);
+        return (num.isPowCompatible(e) && den.isPowCompatible(e)) || e instanceof Decimal;
     }
 
     private static int indexOf(long n, ArrayList<long[]> arrayList){

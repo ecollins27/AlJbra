@@ -40,6 +40,8 @@ public abstract class Expression implements Comparable<Expression>{
             return this;
         } else if (e.equals(Scalar.ZERO)){
             return Scalar.ONE;
+        } else if (e instanceof Log && this.equals(((Log) e).base)){
+            return ((Log) e).operand;
         } else if (this.isPowCompatible(e)){
             return this.__pow__(e);
         } else {

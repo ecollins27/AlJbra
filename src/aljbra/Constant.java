@@ -42,4 +42,34 @@ public class Constant extends Variable {
     public Expression derivative(Variable v) {
         return Scalar.ZERO;
     }
+
+    @Override
+    protected Expression __add__(Expression e) {
+        return new Decimal(value + ((Decimal)e).value);
+    }
+
+    @Override
+    protected Expression __multiply__(Expression e) {
+        return new Decimal(value * ((Decimal)e).value);
+    }
+
+    @Override
+    protected Expression __pow__(Expression e) {
+        return new Decimal(Math.pow(value,((Decimal)e).value));
+    }
+
+    @Override
+    protected boolean isAdditionCompatible(Expression e) {
+        return e instanceof Decimal;
+    }
+
+    @Override
+    protected boolean isMultiplicationCompatible(Expression e) {
+        return e instanceof Decimal;
+    }
+
+    @Override
+    protected boolean isPowCompatible(Expression e) {
+        return e instanceof Decimal;
+    }
 }

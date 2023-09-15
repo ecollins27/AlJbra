@@ -6,7 +6,11 @@ import java.util.HashMap;
 public class Log extends Expression {
 
     public static Expression log(Expression base, Expression operand){
-        if (base.equals(operand)){
+        if (base instanceof Decimal && operand.isEvaluable()){
+            return new Decimal(Math.log(operand.eval(null)) / Math.log(((Decimal) base).value));
+        } else if (operand instanceof Decimal && base.isEvaluable()){
+            return new Decimal(Math.log(((Decimal) operand).value) / Math.log(base.eval(null)));
+        } else if (base.equals(operand)){
             return Scalar.ONE;
         } else if (operand instanceof Exponential){
             return log(base,((Exponential) operand).base).multiply(((Exponential) operand).exponent);
