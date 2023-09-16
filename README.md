@@ -76,6 +76,9 @@ public abstract class Expression {
 
     /* returns true if specified Expression is identifal to called Expression */
     public boolean equals(Expression e);
+
+    /* Used internally to sort expressions.  DO NOT USE */
+    public int compareTo(Expression e);
 }
 ```
 ```java
