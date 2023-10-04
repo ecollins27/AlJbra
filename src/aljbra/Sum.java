@@ -56,6 +56,15 @@ class Sum extends Expression {
     }
 
     @Override
+    public Expression withDecimals() {
+        Expression sum = Decimal.ZERO;
+        for (Expression term: terms){
+            sum = sum.add(term.withDecimals());
+        }
+        return sum;
+    }
+
+    @Override
     public boolean contains(Expression e) {
         if (this.equals(e)){
             return true;
@@ -233,5 +242,31 @@ class Sum extends Expression {
             }
         }
         return -1;
+    }
+
+    public static boolean isSum(String str){
+        for (int i = 0; i < str.length();i++){
+            if (str.charAt(i) == '+' || str.charAt(i) == '-'){
+                return true;
+            } else if (str.charAt(i) == '('){
+                i = getMatchingDelimeter(str,i);
+            }
+        }
+        return false;
+    }
+
+    public static Expression parseSum(String str){
+        Expression sum = Scalar.ZERO;
+        int prev = 0;
+        for (int i = 0; i < str.length();i++){
+            if (str.charAt(i) == '+' || str.charAt(i) == '-'){
+                sum = sum.add(ExpressionParser.parse(str.substring(prev + (prev == 0? 0:1),i)).multiply(str.charAt(prev) == '-'? Scalar.NEG_ONE: Scalar.ONE));
+                prev = i;
+            } else if (str.charAt(i) == '('){
+                i = getMatchingDelimeter(str,i);
+            }
+        }
+        sum = sum.add(ExpressionParser.parse(str.substring(prev + (prev == 0? 0:1))).multiply(str.charAt(prev) == '-'? Scalar.NEG_ONE: Scalar.ONE));
+        return sum;
     }
 }

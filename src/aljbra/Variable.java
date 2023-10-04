@@ -7,12 +7,28 @@ public class Variable extends Expression {
     String name;
     String laTeXName;
 
-    public Variable(String name){
-        this.name = name;
-        this.laTeXName = name;
+    public Variable(char name){
+        this.name = "" + name;
+        this.laTeXName = this.name;
     }
-    public Variable(String name,String laTeXName){
-        this.name = name;
+
+    public Variable(char name, String subtext){
+        if (subtext.length() > 0) {
+            this.name = name + "_{" + subtext + "}";
+        } else {
+            this.name = "" + name;
+        }
+        this.laTeXName = this.name;
+    }
+    public Variable(char name,String subtext,String laTeXName){
+        if (subtext.length() > 0) {
+            this.name = name + "_{" + subtext + "}";
+        } else {
+            this.name = "" + name;
+        }
+        if (laTeXName.length() > 0 && laTeXName.charAt(0) != '\\'){
+            throw new RuntimeException("LaTeX labels for Variables must begin with \"\\\"");
+        }
         this.laTeXName = laTeXName;
     }
 
@@ -46,6 +62,11 @@ public class Variable extends Expression {
     @Override
     public double eval(HashMap<String, Double> values) {
         return values.get(name);
+    }
+
+    @Override
+    public Expression withDecimals() {
+        return this;
     }
 
     @Override
@@ -109,5 +130,29 @@ public class Variable extends Expression {
     @Override
     protected boolean isPowCompatible(Expression e) {
         return false;
+    }
+
+    private final static boolean isLegalCharacter(char c){
+        String illegalCharacters = "+-*/^()[]{}|.,>=<";
+        return !illegalCharacters.contains(String.valueOf(c));
+    }
+
+    protected final static boolean isVariable(String str){
+        if (str.length() == 1){
+            return true;
+        } else if (str.length() == 3){
+            return str.charAt(1) == '_';
+        } else if (str.length() > 3){
+            return str.charAt(1) == '_' && str.charAt(2) == '{' && getMatchingDelimeter(str,2,'{','}') == str.length() - 1;
+        }
+        return false;
+    }
+    protected final static Expression parseVariable(String str){
+        if (str.length() == 1){
+            return new Variable(str.charAt(0));
+        } else if (str.length() == 3){
+            return new Variable(str.charAt(0),"" + str.charAt(2));
+        }
+        return new Variable(str.charAt(0),str.substring(3,str.length() - 1));
     }
 }

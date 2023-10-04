@@ -5,7 +5,7 @@ import aljbra.*;
 public class QuadraticExample {
 
     public static void main(String[] args){
-        Expression a = new Variable("a"), b = new Variable("b"), c = new Variable("c");
+        Expression a = new Variable('a'), b = new Variable('b'), c = new Variable('c');
         Expression quadraticFormula = quadratic(a,b,c);
 
         Expression aVal = Fraction.valueOf(1.3,1);

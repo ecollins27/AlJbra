@@ -1,6 +1,8 @@
 package aljbra;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public abstract class Expression implements Comparable<Expression>{
@@ -62,6 +64,7 @@ public abstract class Expression implements Comparable<Expression>{
     public abstract Expression derivative(Variable v);
     public abstract boolean equals(Object o);
     public abstract double eval(HashMap<String,Double> values);
+    public abstract Expression withDecimals();
     public abstract boolean contains(Expression e);
     public abstract Expression replace(Expression e, Expression with);
     public abstract String toString();
@@ -84,7 +87,7 @@ public abstract class Expression implements Comparable<Expression>{
     protected abstract boolean isMultiplicationCompatible(Expression e);
     protected abstract boolean isPowCompatible(Expression e);
 
-    final static ArrayList<long[]> clone(ArrayList<long[]> arrayList){
+    protected final static ArrayList<long[]> clone(ArrayList<long[]> arrayList){
         ArrayList<long[]> clone = new ArrayList<>();
         for (int i = 0; i < arrayList.size();i++){
             clone.add(arrayList.get(i).clone());
@@ -119,5 +122,24 @@ public abstract class Expression implements Comparable<Expression>{
         } else {
             return 1;
         }
+    }
+
+    protected static int getMatchingDelimeter(String str, int index){
+        return getMatchingDelimeter(str,index,'(',')');
+    }
+
+    protected static int getMatchingDelimeter(String str, int index, char opening, char closing){
+        int counter = 1;
+        for (int i = index + 1; i < str.length();i++){
+            if (str.charAt(i) == opening){
+                counter++;
+            } else if (str.charAt(i) == closing){
+                counter--;
+                if (counter == 0){
+                    return i;
+                }
+            }
+        }
+        throw new RuntimeException("Mismatched delimeter");
     }
 }

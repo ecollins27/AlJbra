@@ -1,4 +1,8 @@
-package aljbra;
+package aljbra.trig;
+
+import aljbra.Expression;
+import aljbra.Scalar;
+import aljbra.Variable;
 
 class Tan extends Trig {
 
@@ -9,5 +13,10 @@ class Tan extends Trig {
     @Override
     public Expression derivative(Variable v) {
         return Trig.cos(operand).pow(Scalar.TWO).invert().multiply(operand.derivative(v));
+    }
+
+    @Override
+    public Expression withDecimals() {
+        return Trig.tan(operand.withDecimals());
     }
 }

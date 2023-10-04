@@ -6,10 +6,6 @@ import java.util.Formatter;
 public class Main {
 
     public static void main(String[] args) {
-        Expression a = new Decimal(5);
-        Expression b = Scalar.TWO.sqrt();
-        Expression log = Log.log(b,a);
-        System.out.println(Log.log(b,a).toLaTeX());
-        System.out.println(b.pow(log));
+        System.out.println(Scalar.TWO.multiply(new Variable('x')));
     }
 }

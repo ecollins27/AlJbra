@@ -64,6 +64,10 @@ public abstract class Expression {
 
     /* returns double approximation of Expression with specified mapping of variable names to double */
     public double eval(HashMap<String,Double> values);
+    
+    /* returns Expression with all Scalars replaced with Decimals.  All evaluable Expressions will be stored as decimal
+       approximations.  All unevaluable Expression remain in simplest form */
+    public Expression withDecimals();
 
     /* returns true if called Expression contains an instance(s) of specified Expression */
     public boolean contains(Expression e);
@@ -75,7 +79,7 @@ public abstract class Expression {
     public Expression derivative(Variable v);
 
     /* returns true if specified Expression is identifal to called Expression */
-    public boolean equals(Expression e);
+    public boolean equals(Object o);
 
     /* Used internally to sort expressions.  DO NOT USE */
     public int compareTo(Expression e);
@@ -91,6 +95,9 @@ public class Scalar extends Expression {
 
     /* constructs Scalar with specified long value */
     public Scalar(long value);
+    
+    /* returns long value of called Scalar */
+    public long getValue();
 
     /* returns ArrayList of long pairs containing a prime factor and its associated power respectively */
     public ArrayList<long[]> primeFactorization();
@@ -111,6 +118,9 @@ public class Decimal extends Expression { // Decimals store
     /* constructs Decimal with specified double value */
     public Decimal(double value);
     
+    /* returns double value of called Decimal */
+    public double getValue();
+    
     /* returns fractional value of called Decimal */
     public Expression asFraction();
     
@@ -123,6 +133,12 @@ public class Fraction extends Expression {
     
     /* returns fractional value of specified decimal */
     public static Expression valueOf(double n);
+    
+    /* returns Scalar numerator of called Fraction */
+    public Scalar getNum();
+    
+    /* returns Scalar denominator of called Fraction */
+    public Scalar getDen();
 
     /* returns fractional value of specified decimal assuming the last specified number of digits repeat infinitely */
     public static Expression valueOf(double n, int repeatingLength);
@@ -131,11 +147,14 @@ public class Fraction extends Expression {
 ```java
 public class Variable extends Expression {
 
-    /* constructs Variable with specified String name and matching name in LaTeX */
-    public Variable(String name);
+    /* constructs Variable with specified char name */
+    public Variable(char name);
 
-    /* constructs Variable with specified String name and specified String laTeXName */
-    public Variable(String name, String laTeXName);
+    /* constructs Variable with specified char name and String subtext */
+    public Variable(char name, String subtext);
+
+    /* constructs Variable with specified char name and String subtext and specified String laTeXName */
+    public Variable(char name, String subtext, String laTeXName);
 
     /* returns name of Variable */
     public String getName();
@@ -153,13 +172,16 @@ public class Constant extends Variable {
     public final static Constant PHI; // Constant with value of golden ratio, phi
     public final static Constant E; // Constant with value of Euler's number, e
 
-    /* constructs Constant with specifed String name and double value */
-    public Constant(String name, double value);
+    /* constructs Constant with specifed char name and double value */
+    public Constant(char name, double value);
 
-    /* constructs Constant with specified String name, String laTeXName, and double value */
-    public Constant(String name, String laTeXName, double value);
+    /* constructs Constant with specified char name and String subtext, and double value */
+    public Constant(char name, String subtext, double value);
 
-    /* returns value of Constant */
+    /* constructs Constant with specified char name and String subtext, String laTeXName, and double value */
+    public Constant(char name, String subtext, String laTeXName, double value);
+
+    /* returns double value of called Constant */
     public double getValue(); 
 }
 ```
@@ -195,5 +217,13 @@ public abstract class Trig extends Expression {
 
     /* returns the arctangent of specified Expression */
     public static Expression atan(Expression e);
+}
+```
+```java
+public final class ExpressionParser {
+    
+    /* Returns Expression matching given String */
+    public static Expression parse(String str);
+    
 }
 ```

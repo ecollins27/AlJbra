@@ -102,6 +102,11 @@ public class Log extends Expression {
     }
 
     @Override
+    public Expression withDecimals() {
+        return log(base.withDecimals(),operand.withDecimals());
+    }
+
+    @Override
     public boolean contains(Expression e) {
         if (this.equals(e)){
             return true;
@@ -175,5 +180,46 @@ public class Log extends Expression {
     @Override
     protected boolean isPowCompatible(Expression e) {
         return false;
+    }
+
+    protected static boolean isLog(String str){
+        if (str.length() > 4 && str.substring(0,3).equals("ln(") && str.charAt(str.length() - 1) == ')'){
+            return true;
+        } else if (str.length() > 5 && str.substring(0,4).equals("log(") && str.charAt(str.length() - 1) == ')'){
+            return true;
+        } else if (str.length() > 9 && str.substring(0,8).equals("logBase(") && str.charAt(str.length() - 1) == ')'){
+            int counter = 0;
+            for (int i = str.indexOf('(') + 1; i < str.length() - 1;i++){
+                if (str.charAt(i) == ','){
+                    counter++;
+                } else if (str.charAt(i) == '('){
+                    i = getMatchingDelimeter(str,i);
+                }
+            }
+            return counter == 1;
+        }
+        return false;
+    }
+
+    protected static Expression parseLog(String str){
+        if (str.length() > 4 && str.substring(0,3).equals("ln(") && str.charAt(str.length() - 1) == ')'){
+            Expression operand = ExpressionParser.parse(str.substring(3,str.length() - 1));
+            return ln(operand);
+        } else if (str.length() > 5 && str.substring(0,4).equals("log(") && str.charAt(str.length() - 1) == ')'){
+            Expression operand = ExpressionParser.parse(str.substring(4,str.length() - 1));
+            return log(new Scalar(10),operand);
+        } else if (str.length() > 9 && str.substring(0,8).equals("logBase(") && str.charAt(str.length() - 1) == ')'){
+            for (int i = str.indexOf('(') + 1; i < str.length() - 1;i++){
+                if (str.charAt(i) == ','){
+                    Expression base = ExpressionParser.parse(str.substring(str.indexOf('(') + 1,i));
+                    Expression operand = ExpressionParser.parse(str.substring(i + 1,str.length() - 1));
+                    return log(base,operand);
+                } else if (str.charAt(i) == '('){
+                    i = getMatchingDelimeter(str,i);
+                }
+            }
+            return null;
+        }
+        return null;
     }
 }

@@ -20,6 +20,10 @@ public class Decimal extends Expression {
     public Decimal(double value){
         this.value = value;
     }
+
+    public double getValue(){
+        return value;
+    }
     @Override
     public Expression negate() {
         return new Decimal(-value);
@@ -44,6 +48,11 @@ public class Decimal extends Expression {
     @Override
     public double eval(HashMap<String, Double> values) {
         return value;
+    }
+
+    @Override
+    public Expression withDecimals() {
+        return this;
     }
 
     @Override
@@ -122,5 +131,18 @@ public class Decimal extends Expression {
     @Override
     protected boolean isPowCompatible(Expression e) {
         return e.isEvaluable();
+    }
+
+    public static boolean isDecimal(String str){
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
+
+    public static Expression parseDecimal(String str){
+        return new Decimal(Double.parseDouble(str));
     }
 }

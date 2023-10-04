@@ -1,5 +1,6 @@
 package aljbra;
 
+import java.text.NumberFormat;
 import java.util.*;
 
 public class Scalar extends Expression {
@@ -70,6 +71,11 @@ public class Scalar extends Expression {
     @Override
     public double eval(HashMap<String, Double> values) {
         return value;
+    }
+
+    @Override
+    public Expression withDecimals() {
+        return new Decimal(value);
     }
 
     @Override
@@ -271,5 +277,36 @@ public class Scalar extends Expression {
             }
         }
         return n;
+    }
+
+    private final static boolean canParseInt(String str){
+        try {
+            Long.parseLong(str);
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
+
+    private final static boolean canParseDouble(String str){
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
+
+    public static boolean isScalar(String str){
+        try {
+            Long.parseLong(str);
+            return !str.contains(".");
+        } catch (NumberFormatException e){
+            return false;
+        }
+    }
+
+    public static Expression parseScalar(String str){
+        return new Scalar(Long.parseLong(str));
     }
 }

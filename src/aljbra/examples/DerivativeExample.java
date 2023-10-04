@@ -4,13 +4,13 @@ import aljbra.Constant;
 import aljbra.Expression;
 import aljbra.Scalar;
 import aljbra.Variable;
-import aljbra.Trig;
+import aljbra.trig.Trig;
 
 public class DerivativeExample {
 
     public static void main(String[] args){
         // Construct f and its gradient
-        Variable x = new Variable("x"), y = new Variable("y"), z = new Variable("z");
+        Variable x = new Variable('x'), y = new Variable('y'), z = new Variable('z');
         Expression F = Trig.cos((Scalar.TWO.multiply(x).add(y).add(new Scalar(5).multiply(z))).pow(Scalar.TWO)).fullSimplify();
         System.out.println("f(x,y,z) = " + F);
         Expression[] gradient = new Expression[]{
@@ -29,8 +29,8 @@ public class DerivativeExample {
 
         // calculate decimal approximations of gradient
         double[] doubleGradient = new double[]{gradient[0].eval(null),gradient[1].eval(null),gradient[2].eval(null)};
-        System.out.println("The gradient of f with respect to x at (3,-1,e^2) is " + gradient[0] + " ≈ " + doubleGradient[0]);
-        System.out.println("The gradient of f with respect to y at (3,-1,e^2) is " + gradient[1] + " ≈ " + doubleGradient[1]);
-        System.out.println("The gradient of f with respect to z at (3,-1,e^2) is " + gradient[2] + " ≈ " + doubleGradient[2]);
+        System.out.printf("The gradient of f with respect to x at (3,-1,e^2) is %s ≈ %s\n",gradient[0],doubleGradient[0]);
+        System.out.printf("The gradient of f with respect to y at (3,-1,e^2) is  %s ≈ %s\n",gradient[1],doubleGradient[1]);
+        System.out.printf("The gradient of f with respect to z at (3,-1,e^2) is  %s ≈ %s\n",gradient[2],doubleGradient[2]);
     }
 }

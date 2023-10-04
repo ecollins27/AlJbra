@@ -1,16 +1,17 @@
-package aljbra;
+package aljbra.trig;
+
+import aljbra.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import java.util.function.Function;
 
-public abstract class Trig extends Unary {
+public abstract class Trig extends Expression {
 
     public static Expression cos(Expression e){
         if (e instanceof ACos){
             return ((ACos) e).operand;
         } else if (e instanceof Decimal){
-            return new Decimal(Math.cos(((Decimal) e).value));
+            return new Decimal(Math.cos(((Decimal) e).getValue()));
         }
         return new Cos(e);
     }
@@ -18,7 +19,7 @@ public abstract class Trig extends Unary {
         if (e instanceof ASin){
             return ((ASin) e).operand;
         } else if (e instanceof Decimal){
-            return new Decimal(Math.sin(((Decimal) e).value));
+            return new Decimal(Math.sin(((Decimal) e).getValue()));
         }
         return new Sin(e);
     }
@@ -26,7 +27,7 @@ public abstract class Trig extends Unary {
         if (e instanceof ATan){
             return ((ATan) e).operand;
         } else if (e instanceof Decimal){
-            return new Decimal(Math.tan(((Decimal) e).value));
+            return new Decimal(Math.tan(((Decimal) e).getValue()));
         }
         return new Tan(e);
     }
@@ -34,7 +35,7 @@ public abstract class Trig extends Unary {
         if (e instanceof Cos){
             return ((Cos) e).operand;
         } else if (e instanceof Decimal){
-            return new Decimal(Math.acos(((Decimal) e).value));
+            return new Decimal(Math.acos(((Decimal) e).getValue()));
         }
         return new ACos(e);
     }
@@ -42,7 +43,7 @@ public abstract class Trig extends Unary {
         if (e instanceof Sin){
             return ((Sin) e).operand;
         } else if (e instanceof Decimal){
-            return new Decimal(Math.asin(((Decimal) e).value));
+            return new Decimal(Math.asin(((Decimal) e).getValue()));
         }
         return new ASin(e);
     }
@@ -50,7 +51,7 @@ public abstract class Trig extends Unary {
         if (e instanceof Tan){
             return ((Tan) e).operand;
         } else if (e instanceof Decimal){
-            return new Decimal(Math.atan(((Decimal) e).value));
+            return new Decimal(Math.atan(((Decimal) e).getValue()));
         }
         return new ATan(e);
     }
@@ -59,8 +60,9 @@ public abstract class Trig extends Unary {
     String name;
     Class<? extends Trig> clazz;
     Class<? extends Trig> inverseClass;
+    protected Expression operand;
     Trig(Expression operand, Function function, Class<? extends Trig> clazz) {
-        super(operand);
+        this.operand = operand;
         this.function = function;
         this.clazz = clazz;
         this.name = clazz.getName();
@@ -78,6 +80,59 @@ public abstract class Trig extends Unary {
         }
         this.name = this.name.toLowerCase();
         this.name = this.name.substring(this.name.lastIndexOf(".") + 1);
+    }
+
+    @Override
+    public Expression negate() {
+        return this.multiply(Scalar.NEG_ONE);
+    }
+
+    @Override
+    public Expression invert() {
+        return this.pow(Scalar.NEG_ONE);
+    }
+
+    @Override
+    public boolean contains(Expression e) {
+        if (this.equals(e)){
+            return true;
+        }
+        return operand.contains(e);
+    }
+
+    @Override
+    public boolean isEvaluable() {
+        return operand.isEvaluable();
+    }
+
+    @Override
+    protected Expression __add__(Expression e) {
+        return null;
+    }
+
+    @Override
+    protected Expression __multiply__(Expression e) {
+        return null;
+    }
+
+    @Override
+    protected Expression __pow__(Expression e) {
+        return null;
+    }
+
+    @Override
+    protected boolean isAdditionCompatible(Expression e) {
+        return false;
+    }
+
+    @Override
+    protected boolean isMultiplicationCompatible(Expression e) {
+        return false;
+    }
+
+    @Override
+    protected boolean isPowCompatible(Expression e) {
+        return false;
     }
 
     @Override
@@ -114,7 +169,7 @@ public abstract class Trig extends Unary {
         if (inverseClass.isInstance(simplifiedOperand)) {
             return simplifiedOperand;
         } else if (simplifiedOperand instanceof Decimal){
-            return new Decimal(function.eval(((Decimal) simplifiedOperand).value));
+            return new Decimal(function.eval(((Decimal) simplifiedOperand).getValue()));
         } else {
             return newInstance(simplifiedOperand);
         }
@@ -129,6 +184,32 @@ public abstract class Trig extends Unary {
             throw new RuntimeException(ex);
         } catch (NoSuchMethodException ex) {
             throw new RuntimeException(ex);
+        }
+    }
+
+    protected static boolean isTrig(String str){
+        String[] names = new String[]{"sin","cos","tan","asin","acos","atan"};
+        for (String name: names) {
+            if (str.length() < name.length() + 3) {
+                return false;
+            } else if (str.substring(0, name.length()).equals(name) && str.charAt(name.length()) == '(' && getMatchingDelimeter(str, name.length()) == str.length() - 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected static Expression parseTrig(String str){
+        String name = str.substring(0,str.indexOf('('));
+        Expression operand = ExpressionParser.parse(str.substring(str.indexOf('(') + 1,str.length() - 1));
+        try {
+            return (Expression) Trig.class.getMethod(name,Expression.class).invoke(null,operand);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
         }
     }
 

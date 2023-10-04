@@ -77,6 +77,15 @@ class Product extends Expression {
     }
 
     @Override
+    public Expression withDecimals() {
+        Expression product = Decimal.ONE;
+        for (Expression term: terms){
+            product = product.multiply(term.withDecimals());
+        }
+        return product;
+    }
+
+    @Override
     public boolean contains(Expression e) {
         if (this.equals(e)){
             return true;
@@ -344,5 +353,31 @@ class Product extends Expression {
             }
         }
         return -1;
+    }
+
+    public static boolean isProduct(String str){
+        for (int i = 0; i < str.length();i++){
+            if (str.charAt(i) == '*' || str.charAt(i) == '/'){
+                return true;
+            } else if (str.charAt(i) == '('){
+                i = getMatchingDelimeter(str,i);
+            }
+        }
+        return false;
+    }
+
+    public static Expression parseProduct(String str){
+        Expression product = Scalar.ONE;
+        int prev = 0;
+        for (int i = 0; i < str.length();i++){
+            if (str.charAt(i) == '*' || str.charAt(i) == '/'){
+                product = product.multiply(ExpressionParser.parse(str.substring(prev + (prev == 0? 0:1),i)).pow(str.charAt(prev) == '/'? Scalar.NEG_ONE: Scalar.ONE));
+                prev = i;
+            } else if (str.charAt(i) == '('){
+                i = getMatchingDelimeter(str,i);
+            }
+        }
+        product = product.multiply(ExpressionParser.parse(str.substring(prev + (prev == 0? 0:1))).pow(str.charAt(prev) == '/'? Scalar.NEG_ONE: Scalar.ONE));
+        return product;
     }
 }

@@ -41,6 +41,11 @@ class Exponential extends Expression {
     }
 
     @Override
+    public Expression withDecimals() {
+        return base.withDecimals().pow(exponent.withDecimals());
+    }
+
+    @Override
     public boolean contains(Expression e) {
         if (this.equals(e)){
             return true;
@@ -180,5 +185,28 @@ class Exponential extends Expression {
     @Override
     protected boolean isPowCompatible(Expression e) {
         return true;
+    }
+
+    public static boolean isExponential(String str){
+        for (int i = 0; i < str.length();i++){
+            if (str.charAt(i) == '^'){
+                return true;
+            } else if (str.charAt(i) == '('){
+                i = getMatchingDelimeter(str,i);
+            }
+        }
+        return false;
+    }
+
+    public static Expression parseExponential(String str){
+        int prev = 0;
+        for (int i = 0; i < str.length();i++){
+            if (str.charAt(i) == '^'){
+                return ExpressionParser.parse(str.substring(0,i)).pow(ExpressionParser.parse(str.substring(i+1)));
+            } else if (str.charAt(i) == '('){
+                i = getMatchingDelimeter(str,i);
+            }
+        }
+        return Scalar.ONE;
     }
 }

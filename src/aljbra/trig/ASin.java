@@ -1,4 +1,8 @@
-package aljbra;
+package aljbra.trig;
+
+import aljbra.Expression;
+import aljbra.Scalar;
+import aljbra.Variable;
 
 class ASin extends Trig {
 
@@ -9,5 +13,10 @@ class ASin extends Trig {
     @Override
     public Expression derivative(Variable v) {
         return Scalar.ONE.subtract(operand.pow(Scalar.TWO)).sqrt().invert().multiply(operand.derivative(v));
+    }
+
+    @Override
+    public Expression withDecimals() {
+        return Trig.asin(operand.withDecimals());
     }
 }

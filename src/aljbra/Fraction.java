@@ -28,6 +28,14 @@ public class Fraction extends Expression {
         }
         return constant.add(new Scalar(num.longValue()).divide(new Scalar((long)Math.pow(10,length))));
     }
+
+    public final Scalar getNum(){
+        return num;
+    }
+
+    public final Scalar getDen(){
+        return den;
+    }
     public static Expression valueOf(double n, int repeatingLength){
         BigDecimal num = BigDecimal.valueOf(n);
         if (repeatingLength > getNumDecimalDigits(num)){
@@ -75,6 +83,11 @@ public class Fraction extends Expression {
     public double eval(HashMap<String, Double> values) {
         BigDecimal quotient = BigDecimal.valueOf(num.eval(values)).divide(BigDecimal.valueOf(den.eval(values)), MathContext.DECIMAL128);
         return quotient.doubleValue();
+    }
+
+    @Override
+    public Expression withDecimals() {
+        return num.withDecimals().divide(den.withDecimals());
     }
 
     @Override
