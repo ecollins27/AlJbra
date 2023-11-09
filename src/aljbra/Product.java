@@ -378,7 +378,7 @@ class Product extends Expression {
         return -1;
     }
 
-    public static boolean isProduct(String str){
+    protected static boolean isProduct(String str){
         for (int i = 0; i < str.length();i++){
             if (str.charAt(i) == '*' || str.charAt(i) == '/'){
                 return true;
@@ -389,7 +389,7 @@ class Product extends Expression {
         return false;
     }
 
-    public static Expression parseProduct(String str){
+    protected static Expression parseProduct(String str){
         Expression product = Scalar.ONE;
         int prev = 0;
         for (int i = 0; i < str.length();i++){

@@ -244,7 +244,7 @@ class Sum extends Expression {
         return -1;
     }
 
-    public static boolean isSum(String str){
+    protected static boolean isSum(String str){
         for (int i = 0; i < str.length();i++){
             if (str.charAt(i) == '+' || str.charAt(i) == '-'){
                 return true;
@@ -255,7 +255,7 @@ class Sum extends Expression {
         return false;
     }
 
-    public static Expression parseSum(String str){
+    protected static Expression parseSum(String str){
         Expression sum = Scalar.ZERO;
         int prev = 0;
         for (int i = 0; i < str.length();i++){

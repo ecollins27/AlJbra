@@ -187,7 +187,7 @@ class Exponential extends Expression {
         return true;
     }
 
-    public static boolean isExponential(String str){
+    protected static boolean isExponential(String str){
         for (int i = 0; i < str.length();i++){
             if (str.charAt(i) == '^'){
                 return true;
@@ -198,7 +198,7 @@ class Exponential extends Expression {
         return false;
     }
 
-    public static Expression parseExponential(String str){
+    protected static Expression parseExponential(String str){
         int prev = 0;
         for (int i = 0; i < str.length();i++){
             if (str.charAt(i) == '^'){

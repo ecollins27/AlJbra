@@ -10,6 +10,8 @@ public abstract class Expression implements Comparable<Expression>{
     public final Expression add(Expression e){
         if (e.equals(Scalar.ZERO) || e.equals(Decimal.ZERO)){
             return this;
+        } else if (this.equals(Scalar.ZERO) || this.equals(Decimal.ZERO)){
+            return e;
         } else if (this.isAdditionCompatible(e)){
             return this.__add__(e);
         } else if (e.isAdditionCompatible(this)){
@@ -22,12 +24,14 @@ public abstract class Expression implements Comparable<Expression>{
         return this.add(e.negate());
     }
     public final Expression multiply(Expression e){
-        if (e.equals(Scalar.ZERO)){
+        if (e.equals(Scalar.ZERO) || this.equals(Scalar.ZERO)){
             return Scalar.ZERO;
-        } else if (e.equals(Decimal.ZERO)){
+        } else if (e.equals(Decimal.ZERO) || this.equals(Decimal.ZERO)){
             return Decimal.ZERO;
         } else if (e.equals(Scalar.ONE) || e.equals(Decimal.ONE)){
             return this;
+        } else if (this.equals(Scalar.ONE) || this.equals(Decimal.ONE)){
+            return e;
         } else if (this.isMultiplicationCompatible(e)){
             return this.__multiply__(e);
         } else if (e.isMultiplicationCompatible(this)){

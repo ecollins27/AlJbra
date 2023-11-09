@@ -183,7 +183,7 @@ public class Scalar extends Expression {
                     rootFactors.add(new long[]{factor[0],(factor[1] * pow) % root});
                 }
             } else {
-                rootFactors.add(factor);
+                rootFactors.add(new long[]{factor[0],factor[1] * pow});
             }
         }
         Expression product;
@@ -297,7 +297,7 @@ public class Scalar extends Expression {
         }
     }
 
-    public static boolean isScalar(String str){
+    protected static boolean isScalar(String str){
         try {
             Long.parseLong(str);
             return !str.contains(".");
@@ -306,7 +306,7 @@ public class Scalar extends Expression {
         }
     }
 
-    public static Expression parseScalar(String str){
+    protected static Expression parseScalar(String str){
         return new Scalar(Long.parseLong(str));
     }
 }

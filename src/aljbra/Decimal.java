@@ -113,6 +113,11 @@ public class Decimal extends Expression {
 
     @Override
     protected Expression __multiply__(Expression e) {
+        if (this.equals(Decimal.ZERO)){
+            return Decimal.ZERO;
+        } else if (this.equals(Decimal.ONE)){
+            return e;
+        }
         BigDecimal product = BigDecimal.valueOf(value).multiply(BigDecimal.valueOf(e.eval(null)));
         return new Decimal(product.doubleValue());
     }
@@ -137,7 +142,7 @@ public class Decimal extends Expression {
         return e.isEvaluable();
     }
 
-    public static boolean isDecimal(String str){
+    protected static boolean isDecimal(String str){
         try {
             Double.parseDouble(str);
             return true;
@@ -146,7 +151,7 @@ public class Decimal extends Expression {
         }
     }
 
-    public static Expression parseDecimal(String str){
+    protected static Expression parseDecimal(String str){
         return new Decimal(Double.parseDouble(str));
     }
 }
