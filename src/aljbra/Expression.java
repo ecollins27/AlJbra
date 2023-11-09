@@ -8,7 +8,7 @@ import java.util.HashMap;
 public abstract class Expression implements Comparable<Expression>{
 
     public final Expression add(Expression e){
-        if (e.equals(Scalar.ZERO)){
+        if (e.equals(Scalar.ZERO) || e.equals(Decimal.ZERO)){
             return this;
         } else if (this.isAdditionCompatible(e)){
             return this.__add__(e);
@@ -24,7 +24,9 @@ public abstract class Expression implements Comparable<Expression>{
     public final Expression multiply(Expression e){
         if (e.equals(Scalar.ZERO)){
             return Scalar.ZERO;
-        } else if (e.equals(Scalar.ONE)){
+        } else if (e.equals(Decimal.ZERO)){
+            return Decimal.ZERO;
+        } else if (e.equals(Scalar.ONE) || e.equals(Decimal.ONE)){
             return this;
         } else if (this.isMultiplicationCompatible(e)){
             return this.__multiply__(e);
@@ -38,9 +40,10 @@ public abstract class Expression implements Comparable<Expression>{
         return this.multiply(e.invert());
     }
     public final Expression pow(Expression e){
-        if (e.equals(Scalar.ONE) || this.equals(Scalar.ZERO) || this.equals(Scalar.ONE)){
+        if (e.equals(Scalar.ONE) || this.equals(Scalar.ZERO) || this.equals(Scalar.ONE) ||
+            e.equals(Decimal.ONE) || this.equals(Decimal.ZERO) || this.equals(Decimal.ONE)){
             return this;
-        } else if (e.equals(Scalar.ZERO)){
+        } else if (e.equals(Scalar.ZERO) || e.equals(Decimal.ZERO)){
             return Scalar.ONE;
         } else if (e instanceof Log && this.equals(((Log) e).base)){
             return ((Log) e).operand;

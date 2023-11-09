@@ -123,7 +123,13 @@ class Product extends Expression {
                 } else {
                     num = num.multiply(term);
                 }
-            } else if (term instanceof Exponential && (((Exponential) term).exponent instanceof Fraction)){
+            } else if (term instanceof Exponential && (((Exponential) term).exponent instanceof Decimal)) {
+                if (((Decimal) ((Exponential) term).exponent).isNegative()) {
+                    den = den.multiply(term.invert());
+                } else {
+                    num = num.multiply(term);
+                }
+            }  else if (term instanceof Exponential && (((Exponential) term).exponent instanceof Fraction)){
                 if (((Fraction) ((Exponential) term).exponent).isNegative()){
                     den = den.multiply(term.invert());
                 } else {
@@ -142,7 +148,24 @@ class Product extends Expression {
         if (den.equals(Scalar.ONE)){
             return basicToString();
         } else {
-            return num.toString() + " / " + den.toString();
+            String toString = "";
+            if (num instanceof Sum && ((Sum) num).terms.length > 1){
+                toString += "(" + num.toString() + ")";
+            } else if (num instanceof Exponential && !((Exponential) num).exponent.equals(Scalar.ONE)){
+                toString += "(" + num.toString() + ")";
+            } else {
+                toString += num.toString();
+            }
+            if (den instanceof Sum && ((Sum) den).terms.length > 1){
+                toString += " / (" + den.toString() + ")";
+            } else if (den instanceof Product && ((Product) den).terms.length > 1){
+                toString += " / (" + den.toString() + ")";
+            } else if (den instanceof Exponential && !((Exponential) den).exponent.equals(Scalar.ONE)){
+                toString += " / (" + den.toString() + ")";
+            } else {
+                toString += " / " + den.toString();
+            }
+            return toString;
         }
     }
 

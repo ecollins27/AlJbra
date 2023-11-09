@@ -24,6 +24,10 @@ public class Decimal extends Expression {
     public double getValue(){
         return value;
     }
+
+    boolean isNegative(){
+        return value < 0;
+    }
     @Override
     public Expression negate() {
         return new Decimal(-value);
