@@ -121,10 +121,10 @@ public abstract class Expression implements Comparable<Expression>{
         }
         try {
             eval(null);
-        } catch (NullPointerException n){
+        } catch (Exception n){
             return 2;
         }
-        if (this instanceof Fraction || this instanceof Scalar){
+        if (this instanceof Fraction || this instanceof Scalar || this instanceof Decimal){
             return 0;
         } else {
             return 1;

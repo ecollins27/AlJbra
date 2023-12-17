@@ -40,6 +40,9 @@ public class Scalar extends Expression {
     }
     @Override
     public Expression negate() {
+        if (this.equals(Scalar.ZERO)){
+            return this;
+        }
         ArrayList<long[]> primeFactors = clone(primeFactorization);
         int index = indexOf(-1,primeFactors);
         if (index >= 0){
@@ -278,25 +281,6 @@ public class Scalar extends Expression {
         }
         return n;
     }
-
-    private final static boolean canParseInt(String str){
-        try {
-            Long.parseLong(str);
-            return true;
-        } catch (NumberFormatException e){
-            return false;
-        }
-    }
-
-    private final static boolean canParseDouble(String str){
-        try {
-            Double.parseDouble(str);
-            return true;
-        } catch (NumberFormatException e){
-            return false;
-        }
-    }
-
     protected static boolean isScalar(String str){
         try {
             Long.parseLong(str);

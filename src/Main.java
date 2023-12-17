@@ -4,6 +4,8 @@ import aljbra.trig.Trig;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println(ExpressionParser.parse("x + (11/10 * y) ^ (2/5)").toLaTeX());
+        Expression e = ExpressionParser.parse("2^2 * 3^3");
+        System.out.println(e);
+        System.out.println(e.getClass());
     }
 }
