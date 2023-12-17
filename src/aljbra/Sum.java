@@ -47,7 +47,7 @@ class Sum extends Expression {
     }
 
     @Override
-    public double eval(HashMap<String, Double> values) {
+    public double eval(VariableMap values) {
         double sum = 0;
         for (Expression term: terms){
             sum += term.eval(values);

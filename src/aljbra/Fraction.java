@@ -3,7 +3,6 @@ package aljbra;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Fraction extends Expression {
 
@@ -80,7 +79,7 @@ public class Fraction extends Expression {
     }
 
     @Override
-    public double eval(HashMap<String, Double> values) {
+    public double eval(VariableMap values) {
         BigDecimal quotient = BigDecimal.valueOf(num.eval(values)).divide(BigDecimal.valueOf(den.eval(values)), MathContext.DECIMAL128);
         return quotient.doubleValue();
     }

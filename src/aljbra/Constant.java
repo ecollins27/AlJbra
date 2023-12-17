@@ -1,7 +1,5 @@
 package aljbra;
 
-import java.util.HashMap;
-
 public class Constant extends Variable {
 
     public final static Constant PI = new Constant('π',"","\\pi",Math.PI);
@@ -35,7 +33,7 @@ public class Constant extends Variable {
     }
 
     @Override
-    public double eval(HashMap<String, Double> values) {
+    public double eval(VariableMap values) {
         if (this.isI()){
             throw new RuntimeException("Cannot evaluate imaginary value");
         }

@@ -68,7 +68,7 @@ class Product extends Expression {
     }
 
     @Override
-    public double eval(HashMap<String, Double> values) {
+    public double eval(VariableMap values) {
         double product = 1;
         for (Expression term: terms){
             product *= term.eval(values);

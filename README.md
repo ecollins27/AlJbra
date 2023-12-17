@@ -63,7 +63,7 @@ public abstract class Expression {
     public Expression toLaTeX();
 
     /* returns double approximation of Expression with specified mapping of variable names to double */
-    public double eval(HashMap<String,Double> values);
+    public double eval(VariableMap values);
     
     /* returns Expression with all Scalars replaced with Decimals.  All evaluable Expressions will be stored as decimal
        approximations.  All unevaluable Expression remain in simplest form */
@@ -224,6 +224,57 @@ public final class ExpressionParser {
     
     /* Returns Expression matching given String */
     public static Expression parse(String str);
+    
+}
+```
+
+```java
+import aljbra.Variable;
+
+public class VariableMap implements Map<Variable, Double> {
+
+    /* construct empty VariableMap */
+    public VariableMap();
+
+    /* construct empty VariableMap with specified initial size */
+    public VariableMap(int initialSize);
+
+    /* returns size of VariableMap */
+    public int size();
+
+    /* returns if VariableMap is empty */
+    public boolean isEmpty();
+
+    /* returns if VariableMap contains specified key */
+    public boolean containsKey(Object key);
+
+    /* returns if VariableMap contains specified value */
+    public boolean containsValue(Object value);
+
+    /* returns value corresponding to specified Variable. Returns null if no such key exists */
+    public Double get(Object key);
+    
+    /* inserts entry with specified Variable key and Double value into VariableMap.  Returns previous
+     value associated with key if it exists. */
+    public Double put(Variable key, Double value);
+    
+    /* removes entry with specified Variable key.  Returns value associated with specified key */
+    public Double remove(Object key);
+    
+    /* adds all entries in Map to VariableMap */
+    public void addAll(Map<? extends Variable, ? extends Double> m);
+    
+    /* empties VariableMap */
+    public void clear();
+    
+    /* returns Set of all keys */
+    public Set<Variable> keySet();
+    
+    /* returns List of all values */
+    public Collection<Double> values();
+    
+    /* returns set of Entry objects associated to VariableMap entries */
+    public Set<Entry<Variable, Double>> entrySet();
     
 }
 ```

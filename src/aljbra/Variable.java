@@ -1,7 +1,5 @@
 package aljbra;
 
-import java.util.HashMap;
-
 public class Variable extends Expression {
 
     String name;
@@ -60,7 +58,7 @@ public class Variable extends Expression {
     }
 
     @Override
-    public double eval(HashMap<String, Double> values) {
+    public double eval(VariableMap values) {
         return values.get(name);
     }
 

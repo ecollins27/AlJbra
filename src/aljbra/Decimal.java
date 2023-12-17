@@ -2,7 +2,6 @@ package aljbra;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.util.HashMap;
 
 public class Decimal extends Expression {
 
@@ -50,7 +49,7 @@ public class Decimal extends Expression {
     }
 
     @Override
-    public double eval(HashMap<String, Double> values) {
+    public double eval(VariableMap values) {
         return value;
     }
 

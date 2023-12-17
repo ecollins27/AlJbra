@@ -1,6 +1,5 @@
 package aljbra;
 
-import java.text.NumberFormat;
 import java.util.*;
 
 public class Scalar extends Expression {
@@ -72,7 +71,7 @@ public class Scalar extends Expression {
     }
 
     @Override
-    public double eval(HashMap<String, Double> values) {
+    public double eval(VariableMap values) {
         return value;
     }
 

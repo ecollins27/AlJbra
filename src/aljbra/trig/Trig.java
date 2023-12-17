@@ -3,7 +3,6 @@ package aljbra.trig;
 import aljbra.*;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 
 public abstract class Trig extends Expression {
 
@@ -141,7 +140,7 @@ public abstract class Trig extends Expression {
     }
 
     @Override
-    public double eval(HashMap<String, Double> values) {
+    public double eval(VariableMap values) {
         return function.eval(operand.eval(values));
     }
 

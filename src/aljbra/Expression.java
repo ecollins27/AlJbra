@@ -1,9 +1,6 @@
 package aljbra;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 
 public abstract class Expression implements Comparable<Expression>{
 
@@ -70,7 +67,7 @@ public abstract class Expression implements Comparable<Expression>{
     }
     public abstract Expression derivative(Variable v);
     public abstract boolean equals(Object o);
-    public abstract double eval(HashMap<String,Double> values);
+    public abstract double eval(VariableMap values);
     public abstract Expression withDecimals();
     public abstract boolean contains(Expression e);
     public abstract Expression replace(Expression e, Expression with);

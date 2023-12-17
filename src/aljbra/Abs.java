@@ -1,7 +1,5 @@
 package aljbra;
 
-import java.util.HashMap;
-
 class Abs extends Expression {
 
     protected Expression operand;
@@ -73,7 +71,7 @@ class Abs extends Expression {
     }
 
     @Override
-    public double eval(HashMap<String, Double> values) {
+    public double eval(VariableMap values) {
         return Math.abs(operand.eval(values));
     }
 

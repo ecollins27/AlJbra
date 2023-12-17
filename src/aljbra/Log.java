@@ -1,7 +1,6 @@
 package aljbra;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Log extends Expression {
 
@@ -97,7 +96,7 @@ public class Log extends Expression {
     }
 
     @Override
-    public double eval(HashMap<String, Double> values) {
+    public double eval(VariableMap values) {
         return Math.log(operand.eval(values)) / Math.log(base.eval(values));
     }
 

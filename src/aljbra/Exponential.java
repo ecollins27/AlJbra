@@ -1,7 +1,5 @@
 package aljbra;
 
-import java.util.HashMap;
-
 class Exponential extends Expression {
 
     Expression base,exponent;
@@ -36,7 +34,7 @@ class Exponential extends Expression {
     }
 
     @Override
-    public double eval(HashMap<String, Double> values) {
+    public double eval(VariableMap values) {
         return Math.pow(base.eval(values),exponent.eval(values));
     }
 
