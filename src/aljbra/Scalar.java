@@ -190,6 +190,8 @@ public class Scalar extends Expression {
         }
         Expression product;
         Scalar rootScalar = new Scalar(rootFactors);
+        boolean imaginary = rootScalar.isNegative();
+        rootScalar = (Scalar) rootScalar.abs();
         if (shouldInvert){
             if (rootScalar.equals(Scalar.ONE)){
                 product = new Scalar(coefficientFactors).invert();
@@ -202,6 +204,9 @@ public class Scalar extends Expression {
             } else {
                 product = new Scalar(coefficientFactors).multiply(new Exponential(rootScalar, new Scalar(root).invert()));
             }
+        }
+        if (imaginary){
+            product = product.multiply(Constant.I);
         }
         return product;
     }
