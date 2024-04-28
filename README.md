@@ -165,12 +165,13 @@ public class Variable extends Expression {
 ```
 ```java
 /* Constants act identical to Variables (except when in operations with Decimals) but do not require a value when
-   eval(HashMap<String,Double> values) is called */
+   eval(HashMap<String,Double> values) is called. */
 public class Constant extends Variable {
 
     public final static Constant PI; // Constant with value of pi
     public final static Constant PHI; // Constant with value of golden ratio, phi
     public final static Constant E; // Constant with value of Euler's number, e
+    public final static Constant I; // Imaginary constant defined as sqrt(-1).  Will throw error is eval() is called
 
     /* constructs Constant with specifed char name and double value */
     public Constant(char name, double value);
