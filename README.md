@@ -230,8 +230,6 @@ public final class ExpressionParser {
 ```
 
 ```java
-import aljbra.Variable;
-
 public class VariableMap implements Map<Variable, Double> {
 
     /* construct empty VariableMap */
