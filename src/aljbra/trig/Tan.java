@@ -7,8 +7,8 @@ class Tan extends Trig {
     protected static Expression[] LOOKUP_TABLE;
 
     static {
-        Expression pi12 = new Scalar(6).sqrt().subtract(Scalar.TWO.sqrt()).divide(new Scalar(6).sqrt().add(Scalar.TWO.sqrt()));
-        Expression pi6 = new Scalar(3).sqrt();
+        Expression pi12 = Scalar.valueOf(6).sqrt().subtract(Scalar.TWO.sqrt()).divide(Scalar.valueOf(6).sqrt().add(Scalar.TWO.sqrt()));
+        Expression pi6 = Scalar.valueOf(3).sqrt();
         Expression pi4 = Scalar.ONE;
         Expression pi3 = pi6.invert();
         Expression pi512 = pi12.invert();
@@ -38,7 +38,7 @@ class Tan extends Trig {
         if (!e.isEvaluable()){
             return null;
         }
-        Expression expressionIndex = e.divide(Constant.PI).multiply(new Scalar(12));
+        Expression expressionIndex = e.divide(Constant.PI).multiply(Scalar.valueOf(12));
         if (!(expressionIndex instanceof Scalar)){
             return null;
         }

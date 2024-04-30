@@ -12,7 +12,7 @@ public abstract class Trig extends Expression {
         } if (e instanceof ACos){
             return ((ACos) e).operand;
         } if (e instanceof Decimal){
-            return new Decimal(Math.cos(((Decimal) e).getValue()));
+            return Decimal.valueOf(Math.cos(((Decimal) e).getValue()));
         } if (Cos.lookup(e) != null){
             return Cos.lookup(e);
         }
@@ -24,7 +24,7 @@ public abstract class Trig extends Expression {
         } if (e instanceof ASin){
             return ((ASin) e).operand;
         } if (e instanceof Decimal){
-            return new Decimal(Math.sin(((Decimal) e).getValue()));
+            return Decimal.valueOf(Math.sin(((Decimal) e).getValue()));
         } if (Sin.lookup(e) != null){
             return Sin.lookup(e);
         }
@@ -36,7 +36,7 @@ public abstract class Trig extends Expression {
         } if (e instanceof ATan){
             return ((ATan) e).operand;
         } if (e instanceof Decimal){
-            return new Decimal(Math.tan(((Decimal) e).getValue()));
+            return Decimal.valueOf(Math.tan(((Decimal) e).getValue()));
         } if (Tan.lookup(e) != null){
             return Tan.lookup(e);
         }
@@ -48,7 +48,7 @@ public abstract class Trig extends Expression {
         } if (e instanceof Cos){
             return ((Cos) e).operand;
         } else if (e instanceof Decimal){
-            return new Decimal(Math.acos(((Decimal) e).getValue()));
+            return Decimal.valueOf(Math.acos(((Decimal) e).getValue()));
         }
         return new ACos(e);
     }
@@ -58,7 +58,7 @@ public abstract class Trig extends Expression {
         } if (e instanceof Sin){
             return ((Sin) e).operand;
         } else if (e instanceof Decimal){
-            return new Decimal(Math.asin(((Decimal) e).getValue()));
+            return Decimal.valueOf(Math.asin(((Decimal) e).getValue()));
         }
         return new ASin(e);
     }
@@ -68,7 +68,7 @@ public abstract class Trig extends Expression {
         } if (e instanceof Tan){
             return ((Tan) e).operand;
         } else if (e instanceof Decimal){
-            return new Decimal(Math.atan(((Decimal) e).getValue()));
+            return Decimal.valueOf(Math.atan(((Decimal) e).getValue()));
         }
         return new ATan(e);
     }
@@ -186,7 +186,7 @@ public abstract class Trig extends Expression {
         if (inverseClass.isInstance(simplifiedOperand)) {
             return simplifiedOperand;
         } else if (simplifiedOperand instanceof Decimal){
-            return new Decimal(function.eval(((Decimal) simplifiedOperand).getValue()));
+            return Decimal.valueOf(function.eval(((Decimal) simplifiedOperand).getValue()));
         } else {
             return newInstance(simplifiedOperand);
         }

@@ -18,7 +18,7 @@ public class Fraction extends Expression {
     }
 
     public static Expression valueOf(double n){
-        Scalar constant = new Scalar((long)n);
+        Scalar constant =Scalar.valueOf((long)n);
         BigDecimal num = BigDecimal.valueOf(n).remainder(BigDecimal.ONE);
         int length = 0;
         while (num.remainder(BigDecimal.ONE).compareTo(BigDecimal.ZERO) != 0){
@@ -45,7 +45,7 @@ public class Fraction extends Expression {
             num = num.scaleByPowerOfTen(1);
             length++;
         }
-        Scalar constant = new Scalar(num.longValue());
+        Scalar constant =Scalar.valueOf(num.longValue());
         BigDecimal decimal = num.remainder(BigDecimal.ONE).scaleByPowerOfTen(repeatingLength);
         return constant.add(new Scalar(decimal.longValue()).divide(new Scalar((long)(Math.pow(10,repeatingLength) - 1)))).divide(new Scalar((long)(Math.pow(10,length))));
     }
@@ -172,7 +172,7 @@ public class Fraction extends Expression {
     @Override
     protected Expression __pow__(Expression e) {
         if (e instanceof Decimal){
-            return new Decimal(Math.pow(this.eval(null),((Decimal) e).value));
+            return Decimal.valueOf(Math.pow(this.eval(null),((Decimal) e).value));
         }
         return num.pow(e).divide(den.pow(e));
     }

@@ -58,12 +58,12 @@ public class Constant extends Variable {
 
     @Override
     protected Expression __add__(Expression e) {
-        return new Decimal(value + ((Decimal)e).value);
+        return Decimal.valueOf(value + ((Decimal)e).value);
     }
 
     @Override
     protected Expression __multiply__(Expression e) {
-        return new Decimal(value * ((Decimal)e).value);
+        return Decimal.valueOf(value * ((Decimal)e).value);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class Constant extends Variable {
                 }
             }
         }
-        return new Decimal(Math.pow(value,((Decimal)e).value));
+        return Decimal.valueOf(Math.pow(value,((Decimal)e).value));
     }
 
     @Override

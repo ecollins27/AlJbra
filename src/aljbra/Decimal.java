@@ -5,20 +5,24 @@ import java.math.MathContext;
 
 public class Decimal extends Expression {
 
-    public final static Decimal NEG_ONE = new Decimal(-1.0);
-    public final static Decimal ZERO = new Decimal(0.0);
-    public final static Decimal ONE = new Decimal(1.0);
-    public final static Decimal TWO = new Decimal(2.0);
+    public final static Decimal NEG_ONE =Decimal.valueOf(-1.0);
+    public final static Decimal ZERO =Decimal.valueOf(0.0);
+    public final static Decimal ONE =Decimal.valueOf(1.0);
+    public final static Decimal TWO =Decimal.valueOf(2.0);
 
-    public final static Decimal PI = new Decimal(Math.PI);
-    public final static Decimal E = new Decimal(Math.E);
-    public final static Decimal PHI = new Decimal((1 + Math.sqrt(5)) / 2.0);
+    public final static Decimal PI =Decimal.valueOf(Math.PI);
+    public final static Decimal E =Decimal.valueOf(Math.E);
+    public final static Decimal PHI =Decimal.valueOf((1 + Math.sqrt(5)) / 2.0);
 
-    public final static Decimal NAN = new Decimal(Double.NaN);
+    public final static Decimal NAN =Decimal.valueOf(Double.NaN);
 
     double value;
 
-    public Decimal(double value){
+    public static final Decimal valueOf(double value){
+        return new Decimal(value);
+    }
+
+    Decimal(double value){
         this.value = value;
     }
 
@@ -34,7 +38,7 @@ public class Decimal extends Expression {
         if (this.equals(Decimal.NAN)){
             return Decimal.NAN;
         }
-        return new Decimal(-value);
+        return Decimal.valueOf(-value);
     }
 
     @Override
@@ -43,7 +47,7 @@ public class Decimal extends Expression {
             return Decimal.NAN;
         }
         BigDecimal inversion = BigDecimal.ONE.divide(BigDecimal.valueOf(value), MathContext.DECIMAL128);
-        return new Decimal(inversion.doubleValue());
+        return Decimal.valueOf(inversion.doubleValue());
     }
 
     @Override
@@ -107,7 +111,7 @@ public class Decimal extends Expression {
         if (this.equals(Decimal.NAN)){
             return Decimal.NAN;
         }
-        return new Decimal(Math.abs(value));
+        return Decimal.valueOf(Math.abs(value));
     }
 
     public Expression asFraction(){
@@ -127,7 +131,7 @@ public class Decimal extends Expression {
     @Override
     protected Expression __add__(Expression e) {
         BigDecimal sum = BigDecimal.valueOf(value).add(BigDecimal.valueOf(e.eval(null)));
-        return new Decimal(sum.doubleValue());
+        return Decimal.valueOf(sum.doubleValue());
     }
 
     @Override
@@ -138,12 +142,12 @@ public class Decimal extends Expression {
             return e;
         }
         BigDecimal product = BigDecimal.valueOf(value).multiply(BigDecimal.valueOf(e.eval(null)));
-        return new Decimal(product.doubleValue());
+        return Decimal.valueOf(product.doubleValue());
     }
 
     @Override
     protected Expression __pow__(Expression e) {
-        return new Decimal(Math.pow(value,e.eval(null)));
+        return Decimal.valueOf(Math.pow(value,e.eval(null)));
     }
 
     @Override
@@ -171,6 +175,6 @@ public class Decimal extends Expression {
     }
 
     protected static Expression parseDecimal(String str){
-        return new Decimal(Double.parseDouble(str));
+        return Decimal.valueOf(Double.parseDouble(str));
     }
 }

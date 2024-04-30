@@ -11,7 +11,7 @@ public class DerivativeExample {
     public static void main(String[] args){
         // Construct f and its gradient
         Variable x = new Variable('x'), y = new Variable('y'), z = new Variable('z');
-        Expression F = Trig.cos((Scalar.TWO.multiply(x).add(y).add(new Scalar(5).multiply(z))).pow(Scalar.TWO)).fullSimplify();
+        Expression F = Trig.cos((Scalar.TWO.multiply(x).add(y).add(Scalar.valueOf(5).multiply(z))).pow(Scalar.TWO)).fullSimplify();
         System.out.println("f(x,y,z) = " + F);
         Expression[] gradient = new Expression[]{
                 F.derivative(x).fullSimplify(),
@@ -20,7 +20,7 @@ public class DerivativeExample {
         };
 
         // replace x,y,z with precise values and simplify gradient
-        Expression xValue = new Scalar(3);
+        Expression xValue = Scalar.valueOf(3);
         Expression yValue = Scalar.NEG_ONE;
         Expression zValue = Constant.E.pow(Scalar.TWO);
         for (int i = 0; i < gradient.length;i++){

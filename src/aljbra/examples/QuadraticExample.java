@@ -9,7 +9,7 @@ public class QuadraticExample {
         Expression quadraticFormula = quadratic(a,b,c);
 
         Expression aVal = Fraction.valueOf(1.3,1);
-        Expression bVal = new Scalar(-7);
+        Expression bVal = Scalar.valueOf(-7);
         Expression cVal = Scalar.TWO;
         Expression solution = quadraticFormula.replace(a,aVal).replace(b,bVal).replace(c,cVal).fullSimplify();
 
@@ -18,7 +18,7 @@ public class QuadraticExample {
     }
 
     public static Expression quadratic(Expression A, Expression B, Expression C){
-        Expression det = B.pow(Scalar.TWO).subtract(new Scalar(4).multiply(A).multiply(C));
+        Expression det = B.pow(Scalar.TWO).subtract(Scalar.valueOf(4).multiply(A).multiply(C));
         return B.negate().add(det.sqrt()).divide(Scalar.TWO.multiply(A));
     }
 }

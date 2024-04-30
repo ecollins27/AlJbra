@@ -19,7 +19,11 @@ public class Scalar extends Expression {
     };
     ArrayList<long[]> primeFactorization;
 
-    public Scalar(long value){
+    public final static Scalar valueOf(long value){
+        return new Scalar(value);
+    }
+
+    Scalar(long value){
         this.value = value;
         this.primeFactorization = getPrimeFactorization(value);
         this.primeFactorization.sort(primeComparator);
@@ -82,7 +86,7 @@ public class Scalar extends Expression {
 
     @Override
     public Expression withDecimals() {
-        return new Decimal(value);
+        return Decimal.valueOf(value);
     }
 
     @Override
@@ -168,7 +172,7 @@ public class Scalar extends Expression {
         if (this.equals(ZERO) || this.equals(ONE)){
             return this;
         } else if (e instanceof Decimal){
-            return new Decimal(Math.pow(value,((Decimal) e).value));
+            return Decimal.valueOf(Math.pow(value,((Decimal) e).value));
         }
         boolean shouldInvert;
         long pow,root;

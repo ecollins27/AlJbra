@@ -94,7 +94,7 @@ public class Scalar extends Expression {
     public final static Scalar TWO; // Scalar of value 2
 
     /* constructs Scalar with specified long value */
-    public Scalar(long value);
+    public static Scalar valueOf(long value);
     
     /* returns long value of called Scalar */
     public long getValue();
@@ -106,7 +106,7 @@ public class Scalar extends Expression {
 ```java
 /* The Decimal class stores decimals as the Scalar class stores integers.  However, unlike Scalar or Constant, when performing
    an operation with a Decimal, the resulting Expression will always be a Decimal, assuming both expressions are evaluable.
-   For example, while Fraction.valueOf(2.64).divide(Scalar.TWO) will result in 33/25, new Decimal(2.64).divide(Scalar.TWO)
+   For example, while Fraction.valueOf(2.64).divide(Scalar.TWO) will result in 33/25,Decimal.valueOf(2.64).divide(Scalar.TWO)
    will result in 1.32.  Do NOT use the Decimal class if exact fractional and radical results are preferred */
 public class Decimal extends Expression { // Decimals store 
     
@@ -116,7 +116,7 @@ public class Decimal extends Expression { // Decimals store
     public final static Decimal TWO; // Decimal value of 2
 
     /* constructs Decimal with specified double value */
-    public Decimal(double value);
+    public static Decimal valueOf(double value);
     
     /* returns double value of called Decimal */
     public double getValue();

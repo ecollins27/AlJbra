@@ -8,9 +8,9 @@ public class Log extends Expression {
         if (base.equals(Decimal.NAN) || operand.equals(Decimal.NAN)){
             return Decimal.NAN;
         } if (base instanceof Decimal && operand.isEvaluable()){
-            return new Decimal(Math.log(operand.eval(null)) / Math.log(((Decimal) base).value));
+            return Decimal.valueOf(Math.log(operand.eval(null)) / Math.log(((Decimal) base).value));
         } else if (operand instanceof Decimal && base.isEvaluable()){
-            return new Decimal(Math.log(((Decimal) operand).value) / Math.log(base.eval(null)));
+            return Decimal.valueOf(Math.log(((Decimal) operand).value) / Math.log(base.eval(null)));
         } else if (base.equals(operand)){
             return Scalar.ONE;
         } else if (operand instanceof Exponential){
