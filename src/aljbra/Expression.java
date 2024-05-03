@@ -15,6 +15,8 @@ public abstract class Expression implements Comparable<Expression>{
             return this.__add__(e);
         } else if (e.isAdditionCompatible(this)){
             return e.add(this);
+        } else if (this.equals(e)){
+            return this.multiply(Scalar.TWO);
         } else {
             return new Sum(this,e);
         }
@@ -37,6 +39,8 @@ public abstract class Expression implements Comparable<Expression>{
             return this.__multiply__(e);
         } else if (e.isMultiplicationCompatible(this)){
             return e.multiply(this);
+        } else if (this.equals(e)){
+            return new Exponential(this,Scalar.TWO);
         } else {
             return new Product(this,e);
         }

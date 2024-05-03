@@ -298,7 +298,7 @@ class Product extends Expression {
         }
         boolean addTerm = true;
         for (Expression term: terms){
-            if (term.isMultiplicationCompatible(e) || e.isMultiplicationCompatible(term)){
+            if (term.isMultiplicationCompatible(e) || e.isMultiplicationCompatible(term) || term.equals(e)){
                 addTerm = false;
             }
         }
@@ -316,12 +316,14 @@ class Product extends Expression {
                         newTerms.add(product);
                     }
                     added = true;
-                } else if (!added &&e.isMultiplicationCompatible(terms[i])){
+                } else if (!added && e.isMultiplicationCompatible(terms[i])){
                     Expression product = e.multiply(terms[i]);
                     if (!product.equals(Scalar.ONE) && !product.equals(Decimal.ONE)){
                         newTerms.add(product);
                     }
                     added = true;
+                } else if (!added && terms[i].equals(e)){
+                    newTerms.add(terms[i].sq());
                 } else if (!terms[i].equals(Scalar.ONE) && !terms[i].equals(Decimal.ONE)){
                     newTerms.add(terms[i]);
                 }

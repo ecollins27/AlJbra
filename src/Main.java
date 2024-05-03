@@ -6,6 +6,7 @@ import java.util.Arrays;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println(Trig.cos(Constant.PI.divide(Scalar.valueOf(4))));
+        Variable l = new Variable('l');
+        System.out.println(l.add(Scalar.ONE).pow(Scalar.valueOf(25)).toLaTeX());
     }
 }

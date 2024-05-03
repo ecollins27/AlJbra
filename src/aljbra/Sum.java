@@ -170,7 +170,7 @@ class Sum extends Expression {
         }
         boolean addTerm = true;
         for (Expression term: terms){
-            if (term.isAdditionCompatible(e) || e.isAdditionCompatible(term)){
+            if (term.isAdditionCompatible(e) || e.isAdditionCompatible(term) || term.equals(e)){
                 addTerm = false;
             }
         }
@@ -194,6 +194,8 @@ class Sum extends Expression {
                         newTerms.add(sum);
                     }
                     added = true;
+                } else if (!added && terms[i].equals(e)){
+                    newTerms.add(terms[i].multiply(Scalar.TWO));
                 } else if (!terms[i].equals(Scalar.ZERO) && !terms[i].equals(Scalar.ZERO)){
                     newTerms.add(terms[i]);
                 }
