@@ -1,5 +1,6 @@
 package aljbra.trig;
 
+import aljbra.Constant;
 import aljbra.Expression;
 import aljbra.Scalar;
 import aljbra.Variable;
@@ -18,5 +19,14 @@ class ATan extends Trig {
     @Override
     public Expression withDecimals() {
         return Trig.atan(operand.withDecimals());
+    }
+
+    protected static Expression lookup(Expression e){
+        for (int i = -6; i < 6; i++) {
+            if (Tan.LOOKUP_TABLE[(i + 24) % 24].equals(e)){
+                return Constant.PI.multiply(Scalar.valueOf(i)).divide(Scalar.valueOf(12));
+            }
+        }
+        return null;
     }
 }

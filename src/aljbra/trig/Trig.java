@@ -49,6 +49,8 @@ public abstract class Trig extends Expression {
             return ((Cos) e).operand;
         } else if (e instanceof Decimal){
             return Decimal.valueOf(Math.acos(((Decimal) e).getValue()));
+        } if (ACos.lookup(e) != null){
+            return ACos.lookup(e);
         }
         return new ACos(e);
     }
@@ -59,6 +61,8 @@ public abstract class Trig extends Expression {
             return ((Sin) e).operand;
         } else if (e instanceof Decimal){
             return Decimal.valueOf(Math.asin(((Decimal) e).getValue()));
+        } if (ASin.lookup(e) != null){
+            return ASin.lookup(e);
         }
         return new ASin(e);
     }
@@ -69,6 +73,8 @@ public abstract class Trig extends Expression {
             return ((Tan) e).operand;
         } else if (e instanceof Decimal){
             return Decimal.valueOf(Math.atan(((Decimal) e).getValue()));
+        } if (ATan.lookup(e) != null){
+            return ATan.lookup(e);
         }
         return new ATan(e);
     }
